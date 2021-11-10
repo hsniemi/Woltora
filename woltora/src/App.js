@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
-import Home from './Home';
-import Login from './Login';
-import Owner from './Owner';
+import Home from './Components/Home';
+import Login from './Components/Login';
+import Owner from './Components/Owner';
 
 function App() {
   return (
