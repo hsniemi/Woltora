@@ -1,0 +1,12 @@
+.ownerHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid lightgrey;
+}
+
+.ownerAddRestaurant {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
