@@ -1,9 +1,10 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
+import AddRestaurant from './Components/AddRestaurant';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Owner from './Components/Owner';
-import data from './Data.json';
+import data from './RestaurantData.json';
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={ <Home /> } />
           <Route path="/Login" element={ <Login /> } />
           <Route path="/Owner" element={ <Owner restaurants={ restaurants }/> } />
+          <Route path="/owner/addrestaurant" element={ <AddRestaurant /> } />          
         </Routes>
       </div>
     </BrowserRouter>

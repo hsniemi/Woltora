@@ -10,3 +10,24 @@
   justify-content: space-around;
   padding: 10px;
 }
+
+.restaurantInfo {
+  display: flex;
+  justify-content: center;
+}
+
+.restaurantInfo form {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.textField {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5px;
+}
+
+.textField input {
+}
