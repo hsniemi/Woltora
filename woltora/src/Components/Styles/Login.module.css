@@ -1,0 +1,10 @@
+.loginHeader{
+    width: 100;
+    height: 100;
+    text-align: center;
+}
+
+.loginBox{
+    display:flex;
+    justify-content: center;
+}
