@@ -9,6 +9,7 @@ import Owner from './Components/Owner';
 import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios, {post} from 'axios';
+import FormData from 'form-data';
 
 class App extends React.Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class App extends React.Component {
 
     addRestaurant = (restaurantName, restaurantAddress, restaurantHoursFrom, restaurantHoursTo, restaurantType, 
       restaurantPriceLevel, restaurantImage ) => {
+        console.log("This state ownerId: " + this.state.ownerId);
         let restaurantHours = restaurantHoursFrom + "-" + restaurantHoursTo;
         const url = "http://localhost:4000/owner/addrestaurant"; 
         const formData = new FormData();
