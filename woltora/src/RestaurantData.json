@@ -4,40 +4,40 @@
             "Id": 1,
             "Name": "Greek Restaurant",
             "Address": "Isokatu 16",
-            "Operating hours": "10-21",
+            "OperatingHours": "10-21",
             "Image": "",
             "Type": "Fast Casual",
-            "Price level": "€€",
+            "PriceLevel": "€€",
             "OwnerId": 1
         },
         {
             "Id": 2,
             "Name": "Chinese Restaurant",
             "Address": "Kirkkokatu 48",
-            "Operating hours": "11-21",
+            "OperatingHours": "11-21",
             "Image": "",
             "Type": "Casual dining",
-            "Price level": "€€€",
+            "PriceLevel": "€€€",
             "OwnerId": 2
         },
         {
             "Id": 3,
             "Name": "MacDonalds",
             "Address": "Kirkkokatu 6",
-            "Operating hours": "11-20",
+            "OperatingHours": "11-20",
             "Image": "",
             "Type": "Fast food",
-            "Price level": "€",
+            "PriceLevel": "€",
             "OwnerId": 3
         },
         {
             "Id": 4,
             "Name": "Rax",
             "Address": "Kauppurienkatu 12",
-            "Operating hours": "12-21",
+            "OperatingHours": "12-21",
             "Image": "",
             "Type": "Buffet",
-            "Price level": "€",
+            "PriceLevel": "€",
             "OwnerId": 4
         }
 

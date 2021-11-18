@@ -1,34 +1,80 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import AddRestaurant from './Components/AddRestaurant';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Owner from './Components/Owner';
-import data from './RestaurantData.json';
+//import data from './RestaurantData.json';
 import Register from './Components/Register';
+import AddMenu from './Components/AddMenu';
+import axios, {post} from 'axios';
 
-function App() {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      restaurants: [],
+      ownerId: 1,
+    }
+  }
 
-  const restaurants = data.restaurants;
+  componentDidMount() {
+    console.log("Mounted");
+    axios.get("http://localhost:4000")
+    .then(response => {
+      console.log(response);
+      this.setState({restaurants: response.data})
+    })
+    .catch(err => console.log(err));
+  }
 
-  return (
-    <BrowserRouter>
-      <div>
-        <div className="navbar">
-          <Link to="/"><div>Home</div></Link>
-          <Link to="/Login"><div>Login/Register</div></Link>
+    addRestaurant = (restaurantName, restaurantAddress, restaurantHoursFrom, restaurantHoursTo, restaurantType, 
+      restaurantPriceLevel, restaurantImage ) => {
+        let restaurantHours = restaurantHoursFrom + "-" + restaurantHoursTo;
+        const url = "http://localhost:4000/owner/addrestaurant"; 
+        const formData = new FormData();
+        formData.append('Name', restaurantName);
+        formData.append('Address', restaurantAddress);
+        formData.append('OperatingHours', restaurantHours);
+        formData.append('Type', restaurantType);
+        formData.append('PriceLevel', restaurantPriceLevel);
+        formData.append('OwnerId', this.state.ownerId);
+        formData.append('Image', restaurantImage);
+        const config = {
+          headers: {
+            'content-type': 'multipart/form-data',
+            'Accept': 'application/json'
+          }
+        }
+        post(url, formData, config)
+        .then((response) => {
+          console.log(response);
+          this.setState({restaurants: response.data});
+        })
+        .catch(err => console.log(err));      
+      }
+   
+  render() {
+    return (
+      <BrowserRouter>
+        <div>
+          <div className="navbar">
+            <Link to="/"><div>Home</div></Link>
+            <Link to="/Login"><div>Login/Register</div></Link>
+          </div>
+          <Routes>
+            <Route path="/" element={ <Home /> } />
+            <Route path="/Login" element={ <Login /> } />
+            <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } ownerId={this.state.ownerId}/> } />
+            <Route path="/owner/addrestaurant" element={ <AddRestaurant restaurants={ this.state.restaurants } addRestaurant={ this.addRestaurant }/> } />
+            <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu /> } />
+            <Route path="/Login/Register" element={ <Register /> } />   
+          </Routes>
         </div>
-        <Routes>
-          <Route path="/" element={ <Home /> } />
-          <Route path="/Login" element={ <Login /> } />
-          <Route path="/Login/Register" element={ <Register /> } />
-          <Link to="/Login"><div>Login</div></Link>
-          <Route path="/Owner" element={ <Owner restaurants={ restaurants }/> } />
-          <Route path="/owner/addrestaurant" element={ <AddRestaurant /> } />          
-        </Routes>
-      </div>
-    </BrowserRouter>
-  );
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;

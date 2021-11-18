@@ -13,21 +13,30 @@
 
 .restaurantInfo {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
 }
 
 .restaurantInfo form {
   display: flex;
   flex-direction: column;
-  width: 320px;
+  width: 350px;
+  border: 1px solid gray;
+  margin-bottom: 5px;
+}
+
+.restaurantInfoContainer {
+  display: flex;
+  justify-content: center;
 }
 
 .textField {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 5px;
+  margin: 10px;
 }
 
-.textField input {
+.addMenuLink {
+  display: flex;
+  justify-content: flex-end;
 }
