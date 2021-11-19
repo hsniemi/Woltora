@@ -1,12 +1,12 @@
 import React from 'react'
-import styles from './Styles/Login.module.css';
+import styles from './Styles/OwnerLogin.module.css';
 import { Link } from 'react-router-dom'
 
-export default function Login() {
+export default function OwnerLogin() {
     return (
       <div className={styles.loginBackground}>
         <div className={styles.loginHeader}>
-          <h1>Login here or <Link to="/Register"><div>Register</div></Link></h1>
+          <h1>Login here or <Link to="/OwnerRegister"><div>Register</div></Link></h1>
         </div>
         <div className={styles.loginBox}>
         <form>

@@ -1,13 +1,13 @@
 import React from 'react'
-import styles from './Styles/Register.module.css';
+import styles from './Styles/OwnerRegister.module.css';
 import { Link } from 'react-router-dom'
 
 
-export default function Register() {
+export default function OwnerRegister() {
     return (
       <div>
         <div className={styles.registerHeader}>
-          <h1><Link to="/login"><div>Login</div></Link> or Register here</h1>
+          <h1><Link to="/OwnerLogin"><div>Login</div></Link> or Register here</h1>
             </div>
                 <div className={styles.registerBox}>
                  <form>
@@ -24,13 +24,13 @@ export default function Register() {
                 <div>
                     <label>
                     <br/>
-                        <input type="text" placeholder="First name" />
+                        <input type="text" placeholder="Owner name" />
                     </label>
                 </div>
                 <div>
                     <label>
                     <br/>
-                        <input type="text" placeholder="Last name" />
+                        <input type="text" placeholder="Phone" />
                     </label>
                 </div>
                 <div>

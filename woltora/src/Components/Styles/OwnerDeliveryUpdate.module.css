@@ -1,0 +1,46 @@
+html {
+    font-family: Helvetica;
+  }
+  .page {
+    width: 600px;
+    max-width: 100%;
+    margin: auto;
+    padding: 1em;
+    border: 1px solid #aaa;
+  }
+  .update-order {
+    text-align: center;
+  }
+  .update-order button {
+    padding: 0.8em;
+    margin: 0.5em;
+  }
+  .status-text {
+    color: #222;
+  }
+  .order-status--container {
+    text-align: center;
+  }
+  .progress--container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .progress {
+    font-size: 0.9em;
+    color: #aaa;
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 1em 0 1em 0;
+    flex: 1;
+  }
+  
+  .progress.completed {
+    background: #15b515;
+    border: 1px solid #198519;
+    color: #fff;
+  }
+  
+  .progress:not(:first-child) {
+    border-left: none;
+  }
