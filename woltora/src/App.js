@@ -10,6 +10,9 @@ import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios, {post} from 'axios';
 import FormData from 'form-data';
+import OwnerLogin from './Components/OwnerLogin';
+import OwnerRegister from './Components/OwnerRegister';
+import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
 
 class App extends React.Component {
   constructor(props) {
@@ -71,12 +74,17 @@ class App extends React.Component {
             <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } ownerId={this.state.ownerId}/> } />
             <Route path="/owner/addrestaurant" element={ <AddRestaurant restaurants={ this.state.restaurants } addRestaurant={ this.addRestaurant }/> } />
             <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu /> } />
-            <Route path="/Login/Register" element={ <Register /> } />   
+            <Route path="/Login/Register" element={ <Register /> } />  
+            <Route path="/Register" element={ <Register /> } />
+            <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
+            <Route path="/OwnerRegister" element={ <OwnerRegister/> } />
+            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } /> 
           </Routes>
         </div>
       </BrowserRouter>
     );
   }
+
 }
 
 export default App;
