@@ -13,6 +13,9 @@ import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios, {post} from 'axios';
 import FormData from 'form-data';
+import OwnerLogin from './Components/OwnerLogin';
+import OwnerRegister from './Components/OwnerRegister';
+import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
 
 class App extends React.Component {
   constructor(props) {
@@ -83,6 +86,7 @@ class App extends React.Component {
       </BrowserRouter>
     );
   }
+
 }
 
 export default App;
