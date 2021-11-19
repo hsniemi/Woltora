@@ -5,6 +5,9 @@ import AddRestaurant from './Components/AddRestaurant';
 import Home from './Components/Home';
 import Login from './Components/Login';
 import Owner from './Components/Owner';
+import OwnerRegister from './Components/OwnerRegister';
+import OwnerLogin from './Components/OwnerLogin';
+import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
 //import data from './RestaurantData.json';
 import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
@@ -74,11 +77,10 @@ class App extends React.Component {
             <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } ownerId={this.state.ownerId}/> } />
             <Route path="/owner/addrestaurant" element={ <AddRestaurant restaurants={ this.state.restaurants } addRestaurant={ this.addRestaurant }/> } />
             <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu /> } />
-            <Route path="/Login/Register" element={ <Register /> } />  
             <Route path="/Register" element={ <Register /> } />
             <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
             <Route path="/OwnerRegister" element={ <OwnerRegister/> } />
-            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } /> 
+            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />   
           </Routes>
         </div>
       </BrowserRouter>
