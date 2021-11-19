@@ -1,0 +1,10 @@
+{
+   "User1" : {
+        "username" : "Login",
+        "password": "Password",
+        "Fname" : "Kalle",
+        "Lname" : "Pikku",
+        "Saddress" : "Pikkutie 3",
+        "Pcode" : "86400"
+    }
+}
