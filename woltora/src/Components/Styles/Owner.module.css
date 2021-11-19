@@ -1,0 +1,42 @@
+.ownerHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border-bottom: 1px solid lightgrey;
+}
+
+.ownerAddRestaurant {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.restaurantInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.restaurantInfo form {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  border: 1px solid gray;
+  margin-bottom: 5px;
+}
+
+.restaurantInfoContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.textField {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.addMenuLink {
+  display: flex;
+  justify-content: flex-end;
+}
