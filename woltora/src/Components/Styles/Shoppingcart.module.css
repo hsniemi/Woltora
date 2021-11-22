@@ -1,0 +1,12 @@
+.shoppingHeader{
+    display: flex;
+    background-color: cadetblue;    
+    width: 300;
+    height: 300;
+    text-align: left;
+}
+
+.shoppingBox{
+    display:flex;
+    justify-content: center;
+}

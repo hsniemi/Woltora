@@ -13,9 +13,7 @@ import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios, {post} from 'axios';
 import FormData from 'form-data';
-import OwnerLogin from './Components/OwnerLogin';
-import OwnerRegister from './Components/OwnerRegister';
-import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
+import Shoppingcart from './Components/Shoppingcart';
 
 class App extends React.Component {
   constructor(props) {
@@ -67,10 +65,17 @@ class App extends React.Component {
     return (
       <BrowserRouter>
         <div>
-          <div className="navbar">
+            <div class="navbar">
+            <a class="active" href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <input type="text" placeholder="Search.."></input>
+            </div>
             <Link to="/"><div>Home</div></Link>
             <Link to="/Login"><div>Login/Register</div></Link>
-          </div>
+
+        
+        <div>
           <Routes>
             <Route path="/" element={ <Home /> } />
             <Route path="/Login" element={ <Login /> } />
@@ -80,11 +85,23 @@ class App extends React.Component {
             <Route path="/Register" element={ <Register /> } />
             <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
             <Route path="/OwnerRegister" element={ <OwnerRegister/> } />
-            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />   
+            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />
+            <Route path="/Shoppingcart>" element={ <Shoppingcart />} />   
           </Routes>
+
         </div>
+
+        </div>
+
+
+
       </BrowserRouter>
+
+
+
+
     );
+
   }
 
 }
