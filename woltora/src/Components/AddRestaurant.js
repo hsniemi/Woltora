@@ -53,22 +53,45 @@ export default function AddRestaurant(props) {
                     <form onSubmit={addRestaurant}>
                         <div className={styles.textField}>
                             <div><label>Name: </label></div>
-                            <div className={styles.inputField}><input type="text" name="newRestaurantName" placeholder="Name of the restaurant" required 
-                            onChange={ event => setNewRestaurantName(event.target.value) }/></div>
+                            <div 
+                                className={styles.inputField}><input 
+                                type="text" name="newRestaurantName" 
+                                placeholder="Name of the restaurant" 
+                                required 
+                                onChange={ event => setNewRestaurantName(event.target.value) }/>
+                                </div>
                         </div>
                         <div className={styles.textField}>
                             <div><label>Address: </label></div>
-                            <div className={styles.inputField}><input type="text" name="newRestaurantAddress" placeholder="Address of the restaurant" required 
-                            onChange={ event => setNewRestaurantAddress(event.target.value) }/></div>
+                            <div className={styles.inputField}>
+                                <input 
+                                    type="text" 
+                                    name="newRestaurantAddress" 
+                                    placeholder="Address of the restaurant"
+                                    required 
+                                    onChange={ event => setNewRestaurantAddress(event.target.value) }/>
+                            </div>
                         </div>
                         <div className={styles.textField}>
                             <div><label>Operating hours: </label></div>
-                            <div className={styles.inputField}>from <input type="time" name="newRestaurantHoursFrom" required 
-                            onChange={ event => setNewRestaurantHoursFrom(event.target.value) }/>to <input type="time" name="newRestaurantHoursTo" onChange={ event => setNewRestaurantHoursTo(event.target.value) }/></div>
+                            <div className={styles.inputField}>from 
+                                <input 
+                                    type="time" 
+                                    name="newRestaurantHoursFrom" 
+                                    required 
+                                    onChange={ event => setNewRestaurantHoursFrom(event.target.value) }
+                                    />to 
+                                <input 
+                                    type="time" 
+                                    name="newRestaurantHoursTo" 
+                                    onChange={ event => setNewRestaurantHoursTo(event.target.value) }/>
+                            </div>
                         </div>
                         <div className={styles.textField}>
                             <div><label>Type: </label></div>
-                                <select name="newRestaurantType" onChange= { event => setNewRestaurantType(event.target.value) }>
+                                <select 
+                                    name="newRestaurantType" 
+                                    onChange= {event => setNewRestaurantType(event.target.value)}>
                                     <option>No selection</option>
                                     <option>Buffet</option>
                                     <option>Fast food</option>
@@ -79,7 +102,9 @@ export default function AddRestaurant(props) {
                         </div>
                         <div className={styles.textField}>
                             <div><label>Price level: </label></div>
-                                <select name="newRestaurantPriceLevel" onChange={ event => setNewRestaurantPriceLevel(event.target.value)}>
+                                <select 
+                                    name="newRestaurantPriceLevel" 
+                                    onChange={ event => setNewRestaurantPriceLevel(event.target.value)}>
                                     <option>No selection</option>
                                     <option>€</option>
                                     <option>€€</option>
@@ -89,7 +114,12 @@ export default function AddRestaurant(props) {
                         </div>
                         <div className={styles.textField}>
                             <div><label>Image: </label></div>
-                            <div><input type="File" name="newRestaurantImage" onChange={ event => setNewRestaurantImage(event.target.files[0]) }/></div>
+                            <div>
+                                <input 
+                                    type="file" 
+                                    name="image" 
+                                    onChange={ event => setNewRestaurantImage(event.target.files[0]) }/>
+                            </div>
                         </div>
                         <div className={styles.textField}>
                             <button type="submit">Submit</button>
