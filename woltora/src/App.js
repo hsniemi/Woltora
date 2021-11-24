@@ -18,6 +18,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       restaurants: [],
+      menus: [],
       ownerId: 1,
     }
   }
