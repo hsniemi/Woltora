@@ -1,20 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function myFunction( {
-var input; filter, ul, li, a, i, txtValue;
-input = document.getElementById("myInput");
-filter = input.value.toUpperCase();
-ul = document.getElementById("myUL");
-li = ul.getElementsByTagName("li");
-for (i = 0; i < li.length; i++) {
-  a = li[i].getElementsByTagName("a")[0];
-  txtValue = a.textContent || a.innerText;
-  if (txtValue.toUpperCase().indexOf(filter) > -1) {
-      li[i].style.display = "";
-  } else {
-      li[i].style.display = "none";
-  }
+export default function myFunction() {
+// var input; filter, ul, li, a, i, txtValue;
+// input = document.getElementById("myInput");
+// filter = input.value.toUpperCase();
+// ul = document.getElementById("myUL");
+// li = ul.getElementsByTagName("li");
+// for (i = 0; i < li.length; i++) {
+//   a = li[i].getElementsByTagName("a")[0];
+//   txtValue = a.textContent || a.innerText;
+//   if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//       li[i].style.display = "";
+//   } else {
+//       li[i].style.display = "none";
+//   }
+  return(
     <div>
       <h2>Wotlora</h2>
       <p> Welcome to Wotlora! Find the best restaurants near you.</p>
@@ -32,6 +33,7 @@ for (i = 0; i < li.length; i++) {
       <li><a href="#">Restaurant 4</a></li>
       </ul>
     </div>
-);
-    
-    }
+    )
+// );
+// }  
+}
