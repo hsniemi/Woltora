@@ -5,14 +5,6 @@ import axios from 'axios';
 
 export default function AddRestaurant(props) {
 
-    // const [newRestaurantName, setNewRestaurantName] = useState("");
-    // const [newRestaurantAddress, setNewRestaurantAddress] = useState("");
-    // const [newRestaurantHoursFrom, setNewRestaurantHoursFrom] = useState("");
-    // const [newRestaurantHoursTo, setNewRestaurantHoursTo] = useState("");
-    // const [newRestaurantType, setNewRestaurantType] = useState("");
-    // const [newRestaurantPriceLevel, setNewRestaurantPriceLevel] = useState("");
-    // const [newRestaurantImage, setNewRestaurantImage] = useState("");
-
     const [state, setState] = useState({
         newRestaurantName: "",
         newRestaurantAddress: "",
