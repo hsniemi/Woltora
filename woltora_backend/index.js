@@ -10,13 +10,20 @@ const cloudinary = require('cloudinary').v2;
 const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 app.use(cors());
-app.use(express.static('public'));
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 
+
+app.get('/', async (req, res) => {
+  try {
+    const restaurants = await pool.query(
+      "SELECT * FROM restaurants"
+    );
+    res.json(restaurants.rows);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
 
 app.post('/owner/addrestaurant/image', async (req, res) => {
   try {

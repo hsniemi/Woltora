@@ -8,7 +8,30 @@
 .ownerAddRestaurant {
   display: flex;
   justify-content: space-around;
-  padding: 10px;
+  margin-top: 20px;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+.restaurants {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid gray;
+  height: 150px;
+  margin-top: 20px;
+}
+.restaurantItem {
+  display: flex;
+  align-items: center;
+}
+
+.restaurantItemContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 70%;
 }
 
 .restaurantInfo {

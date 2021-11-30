@@ -5,10 +5,6 @@ import FormData from 'form-data';
 
 export default function AddMenu(props) {
     console.log(props.restaurantId);
-    // const [menuItemName, setMenuItemName] = useState("");
-    // const [menuItemCategory, setMenuItemCategory] = useState("");
-    // const [menuItemDescription, setMenuItemDescription] = useState("");
-    // const [menuItemPrice, setMenuItemPrice] = useState("");
     const [state, setState] = useState({
         name:"", 
         category:"", 
@@ -17,8 +13,6 @@ export default function AddMenu(props) {
     });
     const [previewSource, setPreviewSource] = useState("");
     const [fileInputState, setFileInputState] = useState("");
-
-    //const [menuItemImage, setMenuItemImage] = useState("");
     const handleFileInputChange = (e) => {
         previewFile(e.target.files[0]);
         setFileInputState(e.target.value);
@@ -84,7 +78,6 @@ export default function AddMenu(props) {
             ...state,
             [e.target.name]: value
         });
-        console.log(value);
     };
 
     // const addMenuItem = (event) => {
@@ -157,7 +150,7 @@ export default function AddMenu(props) {
                     </div>
                     </div>
                 <div>
-                    <div classname={styles.imageButtonContainer}>
+                    <div className={styles.imageButtonContainer}>
                     <div >
                         {previewSource && (
                             <img

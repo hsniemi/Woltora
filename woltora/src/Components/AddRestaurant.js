@@ -4,6 +4,7 @@ import styles from './Styles/Owner.module.css';
 import axios from 'axios';
 
 export default function AddRestaurant(props) {
+    console.log("owner_id: " + props.ownerId);
 
     const [state, setState] = useState({
         newRestaurantName: "",
@@ -85,14 +86,11 @@ export default function AddRestaurant(props) {
         ...state,
         [event.target.name]: value
         });
-        console.log(value);
-    }
+    };
 
-   
-
-    const addRestaurant = (restaurantId) =>  {
-        console.log(restaurantId);
-        props.addRestaurant(restaurantId);
+    const addRestaurant = (restaurant_id) =>  {
+        console.log(restaurant_id);
+        props.addRestaurant(restaurant_id);
    }
 
 
