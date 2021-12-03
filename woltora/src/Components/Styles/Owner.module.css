@@ -27,10 +27,14 @@
   display: flex;
   align-items: center;
 }
+.restaurantItemContainer button {
+  height: 30px;
+}
 
 .restaurantItemContainer {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   width: 70%;
 }
 

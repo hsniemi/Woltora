@@ -1,10 +1,13 @@
 import axios from 'axios';
 import React, {useState} from 'react'
 import styles from './Styles/addMenu.module.css';
-import FormData from 'form-data';
+
 
 export default function AddMenu(props) {
-    console.log(props.restaurantId);
+    
+    const restaurant_id = props.restaurant_id;
+    console.log("AddMenu restaurant_id: " + restaurant_id);
+
     const [state, setState] = useState({
         name:"", 
         category:"", 
@@ -47,7 +50,7 @@ export default function AddMenu(props) {
         const uploadData = async (category, name, description, price, img_url) => {
             try {
                 await axios.post('http://localhost:4000/owner/addrestaurant/addmenu/data', {
-                    restaurant_id: props.restaurantId,
+                    restaurant_id: props.restaurant_id,
                     category: category,
                     name: name,
                     description: description,
@@ -91,11 +94,13 @@ export default function AddMenu(props) {
                 <h1>Add Menu</h1>
             </div>
             <div className={styles.menuForm}>
-                <form onSubmit={handleSubmit}>
+                <form  onSubmit={handleSubmit}>
                     <div className={styles.category}>
                     <select 
+                        className="form-control-sm"
                         name="category"   
-                        value= {state.category}                    
+                        value= {state.category}   
+                        required                 
                         onChange={ handleChange }
                         >
                         <option>Choose Category</option>
@@ -117,6 +122,7 @@ export default function AddMenu(props) {
                                 type="file" 
                                 name="image" 
                                 value = {fileInputState}
+                                required
                                 onChange={ handleFileInputChange }                               
                             />
                         </div>
@@ -126,24 +132,30 @@ export default function AddMenu(props) {
                         </div>
                         <div className={styles.menuNameDescriptionField}>
                             <input 
+                                className="form-control-sm"
                                 type="text" 
                                 name="name"
-                                value= {state.name}                              
+                                value= {state.name} 
+                                required                             
                                 onChange={ handleChange } 
                                 />
-                            <input 
+                            <input
+                                className="form-control-sm" 
                                 type="text" 
                                 name="description" 
-                                value={state.description}                               
+                                value={state.description} 
+                                required                              
                                 onChange={ handleChange } 
                                 />           
                         </div>
                         <div className={styles.menuPrice}>
                             <label>Price </label> 
                             <input 
+                                className="form-control-sm"
                                 type="text" 
                                 name="price"     
-                                value= {state.price}                           
+                                value= {state.price} 
+                                required                          
                                 onChange={ handleChange }
                                 /> 
                         </div> 
