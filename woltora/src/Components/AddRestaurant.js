@@ -4,6 +4,7 @@ import styles from './Styles/Owner.module.css';
 import axios from 'axios';
 
 export default function AddRestaurant(props) {
+    console.log("owner_id: " + props.owner_id);
 
     const [state, setState] = useState({
         newRestaurantName: "",
@@ -85,14 +86,11 @@ export default function AddRestaurant(props) {
         ...state,
         [event.target.name]: value
         });
-        console.log(value);
-    }
+    };
 
-   
-
-    const addRestaurant = (restaurantId) =>  {
-        console.log(restaurantId);
-        props.addRestaurant(restaurantId);
+    const addRestaurant = (restaurant_id) =>  {
+        console.log(restaurant_id);
+        props.addRestaurant(restaurant_id);
    }
 
 
@@ -157,9 +155,8 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantType" 
                                     value= {state.newRestaurantType}
-                                    required
                                     onChange= {handleChange}>
-                                    <option>No selection</option>
+                                    <option disabled>No selection</option>
                                     <option>Buffet</option>
                                     <option>Fast food</option>
                                     <option>Fast casual</option>
@@ -172,9 +169,8 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantPriceLevel"
                                     value= {state.newRestaurantPriceLevel} 
-                                    required
                                     onChange={ handleChange}>
-                                    <option>No selection</option>
+                                    <option disabled>No selection</option>
                                     <option>€</option>
                                     <option>€€</option>
                                     <option>€€€</option>

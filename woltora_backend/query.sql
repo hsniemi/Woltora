@@ -43,7 +43,8 @@ CREATE TABLE orders(
   customer_id UUID,
   date TIMESTAMP NOT NULL,
   total_price VARCHAR(10) NOT NULL,
-  status VARCHAR(45) NOT NULL,
+  status VARCHAR(45) DEFAULT NULL,
+  customer_address VARCHAR(255) NOT NULL,
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
@@ -66,16 +67,62 @@ SELECT
 FROM
   pg_catalog.pg_tables;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-DROP TABLE restaurants;
-SELECT
-  *
-FROM
-  restaurants;
+DROP TABLE orders;
 SELECT
   *
 FROM
   menus;
+SELECT
+  *
+FROM
+  orders;
 DELETE FROM
   restaurants;
 DELETE FROM
   menus;
+INSERT INTO
+  customers (fname, lname, address, user_name, password)
+VALUES
+  (
+    'Ossi',
+    'Asiakas',
+    'Kauppakatu 10',
+    'ossi',
+    'abc123'
+  );
+INSERT INTO
+  orders (
+    date,
+    total_price,
+    status,
+    customer_address,
+    customer_id
+  )
+VALUES
+  (
+    now(),
+    29.90,
+    'Closed',
+    'Kauppakatu 10',
+    '98fff5e7-54d1-4370-b264-85284c564258'
+  );
+INSERT INTO
+  menu_order (order_id, menu_id)
+VALUES
+  (
+    '7cb4e910-8a82-4700-837d-58f90114280c',
+    '9a3af3bf-38db-48ea-b622-ac34811c3300'
+  );
+SELECT
+  orders.order_id,
+  date,
+  total_price,
+  status,
+  customer_address
+FROM
+  orders
+  JOIN menu_order ON orders.order_id = menu_order.order_id
+  JOIN menus ON menus.menu_id = menu_order.menu_id
+  JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id
+WHERE
+  restaurants.restaurant_id = 'a1511248-e85e-45bb-8e72-44891b8cc545';

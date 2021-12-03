@@ -10,13 +10,29 @@ const cloudinary = require('cloudinary').v2;
 const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 app.use(cors());
-app.use(express.static('public'));
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
+app.get('/restaurants', async (req, res) => {
+  try {
+    const restaurants = await pool.query(
+      "SELECT * FROM restaurants"
+    );
+    res.json(restaurants.rows);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+app.post('/menus', async (req, res) => {
+  try{
 
+    const menus = await pool.query(
+      "SELECT * FROM menus"
+    );
+    res.json(menus.rows);
+  }catch(err){
+    console.log(err.message);
+  }
+})
 
 app.post('/owner/addrestaurant/image', async (req, res) => {
   try {
@@ -70,13 +86,6 @@ app.post('/owner/addrestaurant/addmenu', async (req, res) => {
 app.post('/owner/addrestaurant/addmenu/data', async (req, res) => {
   console.log("req.body: " + req.body.data);
   try {
-  //     const fileStr = req.body.image;
-  //     const uploadResponse = await cloudinary.uploader.upload(fileStr, {
-  //     upload_preset: 'dev_setups',
-  //     });
-  //     console.log(uploadResponse);
-  //     res.json(uploadResponse.secure_url);
-
       console.log(req.body);
       const {restaurant_id} =req.body;
       const {category} = req.body;
@@ -96,44 +105,25 @@ app.post('/owner/addrestaurant/addmenu/data', async (req, res) => {
   }
 });
 
-// app.post('/owner/addrestaurant/addmenu', uploadMenu.single('image'), (req, res) => {
-//   console.log(req.body);
-//     menuData.menus.push({
-//       "id": menuData.menus.length + 1,
-//       "Category": req.body.category,
-//       "Name": req.body.name,
-//       "Description": req.body.description,
-//       "Price": req.body.price,
-//       "Image": req.file
-//     })
-//     console.log("menu added");
-//     console.log(menuData.menus);
-// })
-
-
-
-
-
-
-
-
-
-// app.post('/owner/addrestaurant', upload.single('Image'), (req, res) => {
-//     console.log(req.body);
-//     restaurantData.restaurants.push({
-//         "id":restaurantData.restaurants.length + 1,
-//         "Name": req.body.Name,
-//         "Address": req.body.Address,
-//         "Type": req.body.Type,
-//         "OperatingHours": req.body.OperatingHours,
-//         "PriceLevel": req.body.PriceLevel,
-//         "OwnerId": req.body.OwnerId,
-//         "Image": req.file     
-//     })
-//     console.log("restaurant added");
-//     console.log(restaurantData.restaurants);
-//     res.json(restaurantData.restaurants);
-//   })
+app.get('/owner/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const results = await pool.query(
+      "SELECT orders.order_id, date, total_price, status, customer_address, customer_id FROM orders JOIN menu_order ON orders.order_id = menu_order.order_id JOIN menus ON menus.menu_id = menu_order.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
+      [req.params.id]
+    );
+    console.log(results.rows);
+    res.status(200).json({
+      status: "success",
+      results: results.rows.length,
+      data:{
+        orders: results.rows,
+      },
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+});
   
  
   

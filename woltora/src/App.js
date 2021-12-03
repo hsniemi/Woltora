@@ -11,10 +11,10 @@ import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
 import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios from 'axios';
-import FormData from 'form-data';
-
-
 import Shoppingcart from './Components/Shoppingcart';
+import RestaurantView from './Components/RestaurantView';
+import OrderHistoryView from './Components/OrderHistoryView';
+
 
 
 class App extends React.Component {
@@ -23,25 +23,34 @@ class App extends React.Component {
     this.state = {
       restaurants: [],
       menus: [],
-      ownerId: "023004bf-be6a-4e83-8017-123e65aa3de3",
-      restaurantId: ""
+      orders:[],
+      owner_id: "2829436e-c310-4e9a-86f6-7a02467817fd",
+      restaurant_id: ""
     }
+    console.log("app.js: constructor");
   }
 
   componentDidMount() {
     console.log("Mounted");
-    axios.get("http://localhost:4000")
+    axios.get("http://localhost:4000/restaurants")
     .then(response => {
-      console.log(response);
       this.setState({restaurants: response.data})
+      console.log(response.data);
     })
     .catch(err => console.log(err));
   }
 
-    addRestaurant = (restaurantId ) => {
-      console.log('app.js: addRestaurant' + restaurantId);
+    addRestaurant = (restaurant_id ) => {
+      console.log('app.js: addRestaurant ' + restaurant_id);
       this.setState({
-        restaurantId: restaurantId
+        restaurant_id: restaurant_id
+      })
+    }
+
+    setOrders = (orders) => {
+      console.log("app.js, allOrders: " + orders);
+      this.setState({
+        orders: orders
       })
     }
 
@@ -51,6 +60,7 @@ class App extends React.Component {
    
   render() {
     return (
+      
       <BrowserRouter>
         <div>
             <div class="navbar">
@@ -67,9 +77,12 @@ class App extends React.Component {
           <Routes>
             <Route path="/" element={ <Home /> } />
             <Route path="/Login" element={ <Login /> } />
-            <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } ownerId={this.state.ownerId}/> } />
-            <Route path="/owner/addrestaurant" element={ <AddRestaurant restaurants={ this.state.restaurants } addRestaurant={ this.addRestaurant } ownerId={this.state.ownerId}/> } />
-            <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu addMenuItem={ this.addMenuItem } restaurantId={this.state.restaurantId}/> } />
+            <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } owner_id={this.state.owner_id} addRestaurant={ this.addRestaurant } /> } />
+            <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
+            <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
+           
+            <Route path="/owner/addrestaurant" element={ <AddRestaurant restaurants={ this.state.restaurants } owner_id={this.state.owner_id}/> } />
+            <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu  restaurant_id={this.state.restaurant_id}/> } />
             <Route path="/Register" element={ <Register /> } />
             <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
             <Route path="/OwnerRegister" element={ <OwnerRegister/> } />
@@ -81,12 +94,10 @@ class App extends React.Component {
 
         </div>
 
-
-
       </BrowserRouter>
+      
 
-
-
+//<Route path="/owner/:restaurant_id/addmenu" element={AddMenuFromOwnerPage}/>
 
     );
 

@@ -15,6 +15,7 @@ export default function myFunction() {
 //   } else {
 //       li[i].style.display = "none";
 //   }
+// }
   return(
     <div>
       <h2>Wotlora</h2>
@@ -34,6 +35,5 @@ export default function myFunction() {
       </ul>
     </div>
     )
-// );
-// }  
-}
+
+}  
