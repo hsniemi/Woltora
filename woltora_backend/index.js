@@ -12,11 +12,12 @@ const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 
-app.get('/restaurants', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     const restaurants = await pool.query(
       "SELECT * FROM restaurants"
     );
+    console.log(restaurants.rows);
     res.json(restaurants.rows);
   } catch (err) {
     console.log(err.message);
@@ -105,11 +106,59 @@ app.post('/owner/addrestaurant/addmenu/data', async (req, res) => {
   }
 });
 
+app.post('/shoppingcart', async (req, res) => {
+  console.log("req.body.data: " + req.body.data);
+  try {
+    const {customer_id} = req.body;
+    const {total_price} = req.body;
+    const {status} = req.body;
+    const {delivery_address} = req.body;
+    const {payment_method} = req.body;
+
+
+    const result = await pool.query(
+      "INSERT INTO orders (customer_id, date, total_price, status, delivery_address, payment_method) VALUES($1, now(), $2, $3, $4, $5) RETURNING *",
+      [customer_id, total_price, status, delivery_address, payment_method]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+app.post('/shoppingcart/menuorder', async (req, res) => {
+  try {
+    const {menu_id} = req.body;
+    const {order_id} = req.body;
+
+    const result = await pool.query(
+    "INSERT INTO menus_orders (menu_id, order_id) VALUES($1, $2) RETURNING *",
+    [menu_id, order_id]
+    );
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+app.get('/menu/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const result = await pool.query(
+      "SELECT * FROM menus WHERE restaurant_id = $1",
+      [req.params.id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+})
+
 app.get('/owner/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const results = await pool.query(
-      "SELECT orders.order_id, date, total_price, status, customer_address, customer_id FROM orders JOIN menu_order ON orders.order_id = menu_order.order_id JOIN menus ON menus.menu_id = menu_order.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
+      "SELECT orders.order_id, date, price, status, delivery_address, customer_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
       [req.params.id]
     );
     console.log(results.rows);
@@ -124,6 +173,47 @@ app.get('/owner/:id', async (req, res) => {
     console.error(err.message);
   }
 });
+
+
+app.get('/customer/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const result = await pool.query(
+      "SELECT order_id, date, status, total_price FROM orders WHERE customer_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
+      [req.params.id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+});
+
+app.get('/customerhistory/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const result = await pool.query(
+      "SELECT order_id, date, status, total_price FROM orders WHERE customer_id = $1 AND status = 'Closed'",
+      [req.params.id]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
+})
+
+app.put('/customer/receivedorder/:id', async (req, res) => {
+  console.log(req.params.id);
+  try {
+    const result = await pool.query(
+      "UPDATE orders SET status = 'Received' WHERE order_id = $1",
+      [req.params.id]
+    );
+    res.json(result);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
   
  
   

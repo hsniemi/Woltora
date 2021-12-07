@@ -1,0 +1,8 @@
+.orderContainer {
+  width: 1000px;
+}
+
+.orderColumn {
+  padding: 10px;
+  border-bottom: 2px solid gray;
+}

@@ -10,17 +10,6 @@ CREATE TABLE restaurants(
   PRIMARY KEY (restaurant_id),
   FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
 );
-CREATE TABLE menus (
-  menu_id uuid DEFAULT uuid_generate_v4(),
-  restaurant_id UUID NOT NULL,
-  category VARCHAR(50) NOT NULL,
-  name VARCHAR(50) NOT NULL,
-  description VARCHAR(255) NOT NULL,
-  price VARCHAR(10) NOT NULL,
-  image varchar(255),
-  PRIMARY KEY (menu_id),
-  FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
-);
 CREATE TABLE owners(
   owner_id uuid DEFAULT uuid_generate_v4(),
   fname VARCHAR(45) NOT NULL,
@@ -38,19 +27,33 @@ CREATE TABLE customers(
   password VARCHAR(255) NOT NULL,
   PRIMARY KEY (customer_id)
 );
+CREATE TABLE menus (
+  menu_id uuid DEFAULT uuid_generate_v4(),
+  restaurant_id UUID NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  price DECIMAL(10, 2) NOT NULL,
+  image varchar(255),
+  PRIMARY KEY (menu_id),
+  FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
+);
 CREATE TABLE orders(
   order_id uuid DEFAULT uuid_generate_v4(),
   customer_id UUID,
   date TIMESTAMP NOT NULL,
-  total_price VARCHAR(10) NOT NULL,
-  status VARCHAR(45) DEFAULT NULL,
-  customer_address VARCHAR(255) NOT NULL,
+  total_price DECIMAL(10, 2) NOT NULL,
+  status VARCHAR(45),
+  delivery_address VARCHAR(255) NOT NULL,
+  payment_method VARCHAR(15) NOT NULL,
   PRIMARY KEY (order_id),
   FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
-CREATE TABLE menu_order(
+CREATE TABLE menus_orders(
   menu_id UUID NOT NULL,
-  order_id UUID NOT NULL
+  order_id UUID NOT NULL,
+  FOREIGN KEY (menu_id) REFERENCES menus(menu_id),
+  FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 INSERT INTO
   owners (fname, lname, user_name, password)
@@ -65,21 +68,21 @@ WHERE
 SELECT
   *
 FROM
-  pg_catalog.pg_tables;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-DROP TABLE orders;
-SELECT
-  *
-FROM
   menus;
 SELECT
   *
 FROM
   orders;
-DELETE FROM
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+DROP TABLE orders cascade;
+SELECT
+  *
+FROM
+  menus_orders;
+SELECT
+  *
+FROM
   restaurants;
-DELETE FROM
-  menus;
 INSERT INTO
   customers (fname, lname, address, user_name, password)
 VALUES
@@ -101,28 +104,53 @@ INSERT INTO
 VALUES
   (
     now(),
-    29.90,
-    'Closed',
-    'Kauppakatu 10',
-    '98fff5e7-54d1-4370-b264-85284c564258'
+    39.90,
+    'Delivered',
+    'Kauppurienkatu 24',
+    'c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb'
   );
 INSERT INTO
   menu_order (order_id, menu_id)
 VALUES
   (
-    '7cb4e910-8a82-4700-837d-58f90114280c',
-    '9a3af3bf-38db-48ea-b622-ac34811c3300'
+    '2e61016d-11d4-41da-8e1f-c8377252de9e',
+    '342ca5fc-7d3e-4cdd-ada5-aee7327234d2'
   );
 SELECT
   orders.order_id,
   date,
-  total_price,
+  price,
   status,
-  customer_address
+  delivery_address
 FROM
   orders
-  JOIN menu_order ON orders.order_id = menu_order.order_id
-  JOIN menus ON menus.menu_id = menu_order.menu_id
+  JOIN menus_orders ON orders.order_id = menus_orders.order_id
+  JOIN menus ON menus.menu_id = menus_orders.menu_id
   JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id
 WHERE
-  restaurants.restaurant_id = 'a1511248-e85e-45bb-8e72-44891b8cc545';
+  restaurants.restaurant_id = '82f468e6-f923-4109-8e55-d148c45f44cc';
+SELECT
+  *
+FROM
+  menus
+  JOIN menus_orders ON menus.menus_id = menus_orders.menus_id
+  JOIN orders ON orders.order_id = menus_orders.order_id
+WHERE
+  customer_id = "c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb";
+UPDATE
+  orders
+SET
+  status = 'Waiting'
+WHERE
+  order_id = '9f134d58-c894-4a04-a8ca-7481ce658cc7';
+SHOW TIMEZONE;
+SET
+  TIMEZONE = + 2;
+DELETE FROM
+  menu_order;
+SELECT
+  menu_id,
+  order_id
+FROM
+  menus
+  CROSS JOIN orders;
