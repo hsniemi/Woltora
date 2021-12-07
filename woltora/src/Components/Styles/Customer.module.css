@@ -1,0 +1,19 @@
+.customerHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 20px;
+  border-bottom: 1px solid gray;
+}
+.latestOrder {
+  display: flex;
+  border: 1px solid gray;
+}
+.status {
+  font-weight: bold;
+}
+.orderItem {
+  margin: 20px;
+}
+.orderHistory {
+  margin-top: 20px;
+}

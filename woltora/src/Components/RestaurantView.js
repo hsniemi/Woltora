@@ -25,7 +25,7 @@ export default function RestaurantView(props) {
             }
         }
       getOrders();
-    },[]); 
+    },[restaurant_id]); 
 
     const handleClick = (event) =>{
         navigate('/owner');
