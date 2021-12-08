@@ -78,7 +78,7 @@ DROP TABLE orders cascade;
 SELECT
   *
 FROM
-  menus_orders;
+  orders;
 SELECT
   *
 FROM
@@ -133,21 +133,22 @@ SELECT
   *
 FROM
   menus
-  JOIN menus_orders ON menus.menus_id = menus_orders.menus_id
-  JOIN orders ON orders.order_id = menus_orders.order_id
+  JOIN menus_orders ON menus.menu_id = menus_orders.menu_id
+  JOIN orders ON orders.order_id = menus_orders.order_id 
+  JOIN customers ON customers.customer_id = orders.customer_id
 WHERE
-  customer_id = "c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb";
+  orders.customer_id = "c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb";
 UPDATE
   orders
 SET
-  status = 'Waiting'
+  status = 'Closed'
 WHERE
-  order_id = '9f134d58-c894-4a04-a8ca-7481ce658cc7';
+ delivery_address = 'Yliopistokatu 16';
 SHOW TIMEZONE;
 SET
   TIMEZONE = + 2;
 DELETE FROM
-  menu_order;
+  orders;
 SELECT
   menu_id,
   order_id

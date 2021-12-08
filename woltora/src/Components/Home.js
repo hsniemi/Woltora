@@ -1,39 +1,37 @@
-import React from 'react'
+import React, {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
+import RestaurantList from './RestaurantList'
+import styles from './Styles/Home.module.css';
 
-export default function myFunction() {
-// var input; filter, ul, li, a, i, txtValue;
-// input = document.getElementById("myInput");
-// filter = input.value.toUpperCase();
-// ul = document.getElementById("myUL");
-// li = ul.getElementsByTagName("li");
-// for (i = 0; i < li.length; i++) {
-//   a = li[i].getElementsByTagName("a")[0];
-//   txtValue = a.textContent || a.innerText;
-//   if (txtValue.toUpperCase().indexOf(filter) > -1) {
-//       li[i].style.display = "";
-//   } else {
-//       li[i].style.display = "none";
-//   }
-// }
+
+export default function Home(props) {
+  const [searchFieldString, setSearchFieldString] = useState("");
+  const {restaurants} = props;
+
+
+  const onSearchFieldChange = (event) => {
+    console.log(event.target.value);
+    setSearchFieldString(event.target.value);
+  }
+
   return(
     <div>
-      <h2>Wotlora</h2>
-      <p> Welcome to Wotlora! Find the best restaurants near you.</p>
-      
-      <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name"></input>
-      <Link to="Restaurant 1"><button>Go to second view</button></Link>
-      <Link to="Restaurant 2"><button>Go to second view</button></Link>
-      <Link to="Restaurant 3"><button>Go to second view</button></Link>
-      <Link to="Restaurant 4"><button>Go to second view</button></Link>
-
-      <ul id="myUL">
-      <li><a href="#">Restaurant 1</a></li>
-      <li><a href="#">Restaurant 2</a></li>
-      <li><a href="#">Restaurant 3</a></li>
-      <li><a href="#">Restaurant 4</a></li>
-      </ul>
+      <div className={styles.headerContainer}>
+        <div>
+          <h2>Woltora</h2>
+          <p> Welcome to Woltora! Find the best restaurants near you.</p>
+        </div>
+        <div>
+          <Link to="/Shoppingcart">Go to shopping cart</Link>
+        </div>
+      </div>
+      <div className={styles.searchBar}>
+        <input type="text" id="searchField" onChange={onSearchFieldChange} value={searchFieldString} placeholder="Search for restaurants" ></input>
+      </div>
+      <div>
+        <RestaurantList restaurants={restaurants.filter(restaurant => restaurant.name.toUpperCase().includes(searchFieldString.toUpperCase()))}/>
+      </div>
     </div>
     )
 
-}  
+}   
