@@ -1,6 +1,6 @@
 CREATE TABLE restaurants(
   restaurant_id uuid DEFAULT uuid_generate_v4(),
-  owner_id UUID NOT NULL,
+  user_id UUID NOT NULL,
   name VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
   operating_hours VARCHAR(15) NOT NULL,
@@ -8,24 +8,7 @@ CREATE TABLE restaurants(
   price_level VARCHAR(4) NOT NULL,
   image varchar(255),
   PRIMARY KEY (restaurant_id),
-  FOREIGN KEY (owner_id) REFERENCES owners(owner_id)
-);
-CREATE TABLE owners(
-  owner_id uuid DEFAULT uuid_generate_v4(),
-  fname VARCHAR(45) NOT NULL,
-  lname VARCHAR(45) NOT NULL,
-  user_name VARCHAR(45) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  PRIMARY KEY (owner_id)
-);
-CREATE TABLE customers(
-  customer_id uuid DEFAULT uuid_generate_v4(),
-  fname VARCHAR(45) NOT NULL,
-  lname VARCHAR(45) NOT NULL,
-  address VARCHAR(255) NOT NULL,
-  user_name VARCHAR(45) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  PRIMARY KEY (customer_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 CREATE TABLE menus (
   menu_id uuid DEFAULT uuid_generate_v4(),
@@ -38,16 +21,26 @@ CREATE TABLE menus (
   PRIMARY KEY (menu_id),
   FOREIGN KEY (restaurant_id) REFERENCES restaurants(restaurant_id)
 );
+CREATE TABLE users(
+  user_id uuid DEFAULT uuid_generate_v4(),
+  fname VARCHAR(45) NOT NULL,
+  lname VARCHAR(45) NOT NULL,
+  street_address VARCHAR(45) NOT NULL,
+  post_code VARCHAR(45) NOT NULL,
+  user_name VARCHAR(45) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  PRIMARY KEY (user_id)
+);
 CREATE TABLE orders(
   order_id uuid DEFAULT uuid_generate_v4(),
-  customer_id UUID,
+  user_id UUID,
   date TIMESTAMP NOT NULL,
   total_price DECIMAL(10, 2) NOT NULL,
   status VARCHAR(45),
   delivery_address VARCHAR(255) NOT NULL,
   payment_method VARCHAR(15) NOT NULL,
   PRIMARY KEY (order_id),
-  FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+  FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 CREATE TABLE menus_orders(
   menu_id UUID NOT NULL,
@@ -55,10 +48,45 @@ CREATE TABLE menus_orders(
   FOREIGN KEY (menu_id) REFERENCES menus(menu_id),
   FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
+-- CREATE TABLE owners(
+--   owner_id uuid DEFAULT uuid_generate_v4(),
+--   fname VARCHAR(45) NOT NULL,
+--   lname VARCHAR(45) NOT NULL,
+--   phone VARCHAR(45) NOT NULL,
+--   street_address VARCHAR(45) NOT NULL,
+--   post_code VARCHAR(45) NOT NULL,
+--   user_name VARCHAR(45) NOT NULL,
+--   password VARCHAR(255) NOT NULL,
+--   PRIMARY KEY (owner_id)
+-- );
+-- CREATE TABLE customers(
+--   customer_id uuid DEFAULT uuid_generate_v4(),
+--   fname VARCHAR(45) NOT NULL,
+--   lname VARCHAR(45) NOT NULL,
+--   street_address VARCHAR(45) NOT NULL,
+--   post_code VARCHAR(45) NOT NULL,
+--   user_name VARCHAR(45) NOT NULL,
+--   password VARCHAR(255) NOT NULL,
+--   PRIMARY KEY (customer_id)
+-- );
 INSERT INTO
-  owners (fname, lname, user_name, password)
+  users (
+    fname,
+    lname,
+    street_address,
+    post_code,
+    user_name,
+    password
+  )
 VALUES
-  ('John', 'Doe', 'john', 'ghi789');
+  (
+    'Alice',
+    'Smith',
+    'Streetname 20',
+    '20900',
+    'alice',
+    'ghi789'
+  );
 SELECT
   owner_id
 FROM
@@ -68,21 +96,25 @@ WHERE
 SELECT
   *
 FROM
-  menus;
+  users;
 SELECT
   *
 FROM
   orders;
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-DROP TABLE orders cascade;
-SELECT
-  *
-FROM
-  menus_orders;
 SELECT
   *
 FROM
   restaurants;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+DROP TABLE users cascade;
+SELECT
+  *
+FROM
+  restaurants;
+SELECT
+  *
+FROM
+  orders;
 INSERT INTO
   customers (fname, lname, address, user_name, password)
 VALUES
@@ -133,21 +165,22 @@ SELECT
   *
 FROM
   menus
-  JOIN menus_orders ON menus.menus_id = menus_orders.menus_id
+  JOIN menus_orders ON menus.menu_id = menus_orders.menu_id
   JOIN orders ON orders.order_id = menus_orders.order_id
+  JOIN customers ON customers.customer_id = orders.customer_id
 WHERE
-  customer_id = "c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb";
+  orders.customer_id = "c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb";
 UPDATE
   orders
 SET
-  status = 'Waiting'
+  status = 'Closed'
 WHERE
-  order_id = '9f134d58-c894-4a04-a8ca-7481ce658cc7';
+  delivery_address = 'Yliopistokatu 16';
 SHOW TIMEZONE;
 SET
   TIMEZONE = + 2;
 DELETE FROM
-  menu_order;
+  menus;
 SELECT
   menu_id,
   order_id

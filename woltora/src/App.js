@@ -16,6 +16,8 @@ import RestaurantView from './Components/RestaurantView';
 import OrderHistoryView from './Components/OrderHistoryView';
 import Customer from './Components/Customer';
 import CustomerOrderHistory from './Components/CustomerOrderHistory';
+import {OrderContextProvider} from './Context/OrderContext';
+import MenuView from './Components/MenuView';
 
 
 
@@ -26,15 +28,13 @@ class App extends React.Component {
       restaurants: [],
       menus: [],
       orders:[],
-      owner_id: "2829436e-c310-4e9a-86f6-7a02467817fd",
-      customer_id:"c0a8547f-3bde-4c6f-aba9-0f4d2feb2aeb",
+      owner_id: "",
+      customer_id: "899c3e4e-c5c9-45d1-8d16-34221a8ab7be",
       restaurant_id: ""
     }
-    console.log("app.js: constructor");
   }
 
   componentDidMount() {
-    console.log("Mounted");
     axios.get("http://localhost:4000")
     .then(response => {
       this.setState({restaurants: response.data})
@@ -43,12 +43,21 @@ class App extends React.Component {
     .catch(err => console.log(err));
   }
 
-    addRestaurant = (restaurant_id ) => {
-      console.log('app.js: addRestaurant ' + restaurant_id);
-      this.setState({
-        restaurant_id: restaurant_id
-      })
-    }
+  addOwnerId = (ownerId) => {
+    this.setState({owner_id: ownerId})
+    console.log('new owner_id: ' + this.state.owner_id);
+  }
+
+  addRestaurant = (restaurant) => {
+    this.setState([...this.state.restaurants, restaurant]);
+  }
+
+  addRestaurantId = (restaurant_id ) => {
+    console.log('app.js: addRestaurant Id ' + restaurant_id);
+    this.setState({
+      restaurant_id: restaurant_id
+    })
+  }
 
     setOrders = (orders) => {
       console.log("app.js, allOrders: " + orders);
@@ -56,41 +65,34 @@ class App extends React.Component {
         orders: orders
       })
     }
-
-    addMenuItem = (menuCategory, menuName, menuDescription, menuPrice, menuImage) => {
-  
-    }
    
   render() {
     return (
       
       <BrowserRouter>
         <div>
-            <div class="navbar">
-            <a class="active" href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-            <input type="text" placeholder="Search.."></input>
-            </div>
             <Link to="/"><div>Home</div></Link>
             <Link to="/Login"><div>Login/Register</div></Link>
         <div>
+          <OrderContextProvider>
           <Routes>
-            <Route path="/" element={ <Home /> } />
+            <Route path="/" element={ <Home restaurants={this.state.restaurants}/> } />
+            <Route path="/menu/:restaurant_id" element={<MenuView />}/>
             <Route path="/Login" element={ <Login /> } />
-            <Route path="/Owner" element={ <Owner restaurants={ this.state.restaurants } owner_id={this.state.owner_id} restaurants={this.state.restaurants} addRestaurant={ this.addRestaurant } /> } />
+            <Route path="/Owner" element={ <Owner owner_id={this.state.owner_id} addRestaurantId={this.addRestaurantId}/> } />
             <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
             <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
             <Route path="/owner/addrestaurant" element={ <AddRestaurant owner_id={this.state.owner_id} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
             <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu  restaurant_id={this.state.restaurant_id}/> } />
             <Route path="/customer" element={<Customer customer_id={this.state.customer_id}/>} />
             <Route path="/customer/orderhistory" element={<CustomerOrderHistory customer_id={this.state.customer_id}/>}/>
-            <Route path="/Register" element={ <Register /> } />
+            <Route path="/Register" element={ <Register  /> } />
             <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
-            <Route path="/OwnerRegister" element={ <OwnerRegister/> } />
+            <Route path="/OwnerRegister" element={ <OwnerRegister addOwnerId={this.addOwnerId}/> } />
             <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />
-            <Route path="/Shoppingcart>" element={ <Shoppingcart />} />   
+            <Route path="/Shoppingcart" element={ <Shoppingcart customer_id={this.state.customer_id}/>} />   
           </Routes>
+          </OrderContextProvider>
         </div>
         </div>
       </BrowserRouter>

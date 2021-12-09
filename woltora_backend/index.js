@@ -3,14 +3,98 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { v4: uuidv4 } = require('uuid');
+const bcrypt = require('bcrypt');
 const pool = require('./db');
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
 
 const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
+
+app.use((req, res, next) => { 
+    console.log('middleware executing...');
+    next();
+});
+
+const users = [
+  {
+    id: 1,
+    username: 'demouser',
+    password: '123456'
+  },
+  {
+    id: 2,
+    username: 'testuser',
+    password: '789876'
+  }
+]
+
+passport.use(new BasicStrategy(
+  async (username, password, done) => {
+    console.log('username: ' + username);
+    console.log('password: ' + password);
+ 
+    pool.query(
+      "SELECT * FROM users WHERE user_name = $1",
+      [username],
+      (err, result) => {
+        if(err) {
+          throw err;
+        }
+        console.log(result.rows[0]);
+        
+        if(result.rows.length > 0) {
+          if(bcrypt.compareSync(password, result.rows[0].password)) {
+            done(null, result.rows[0]);
+          }else{
+            done(null, false);
+          }
+        }else{
+          done(null, false);
+        }
+      }
+    )
+  }
+))
+
+app.get('/protected-resource', passport.authenticate('basic', {session: false}), (req, res) => {
+  console.log('Protected Resource accessed');
+
+  res.send('Hello protected world!');
+})
+
+app.get('/another-protected-resource', passport.authenticate('basic', {session: false}), (req, res) => {
+  console.log('Another Protected Resource accessed');
+})
+
+
+app.post('/register', async (req, res) => {
+  console.log(req.body);
+  const salt = bcrypt.genSaltSync(6);
+  const passwordHash = bcrypt.hashSync(req.body.password, salt);
+
+  try{
+    const {fname} = req.body;
+    const {lname} = req.body;
+    const {street_address} = req.body;
+    const {post_code} = req.body;
+    const {user_name} = req.body;
+    const password = passwordHash
+
+    const result = await pool.query(
+      "INSERT INTO users (fname, lname, street_address, post_code, user_name, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING*",
+      [fname, lname, street_address, post_code, user_name, password]
+    );
+    console.log(result.rows[0]);
+    res.json(result.rows[0]);
+  }catch(err){
+    console.log(err.message);
+  }
+})
 
 app.get('/', async (req, res) => {
   try {
@@ -57,11 +141,11 @@ app.post('/owner/addrestaurant/data', async (req, res) => {
         const {operating_hours} = req.body;
         const {type} = req.body;
         const {price_level} = req.body;
-        const {owner_id} = req.body;
+        const {user_id} = req.body;
         const {image} = req.body;
         const restaurant = await pool.query(
-            "INSERT INTO restaurants (name, address, operating_hours, type, price_level, owner_id, image) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-            [name, address, operating_hours, type, price_level, owner_id, image]
+            "INSERT INTO restaurants (name, address, operating_hours, type, price_level, user_id, image) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+            [name, address, operating_hours, type, price_level, user_id, image]
         );
         console.log(restaurant.rows[0]);
         res.json(restaurant.rows[0]);
@@ -109,7 +193,7 @@ app.post('/owner/addrestaurant/addmenu/data', async (req, res) => {
 app.post('/shoppingcart', async (req, res) => {
   console.log("req.body.data: " + req.body.data);
   try {
-    const {customer_id} = req.body;
+    const {user_id} = req.body;
     const {total_price} = req.body;
     const {status} = req.body;
     const {delivery_address} = req.body;
@@ -117,8 +201,8 @@ app.post('/shoppingcart', async (req, res) => {
 
 
     const result = await pool.query(
-      "INSERT INTO orders (customer_id, date, total_price, status, delivery_address, payment_method) VALUES($1, now(), $2, $3, $4, $5) RETURNING *",
-      [customer_id, total_price, status, delivery_address, payment_method]
+      "INSERT INTO orders (user_id, date, total_price, status, delivery_address, payment_method) VALUES($1, now(), $2, $3, $4, $5) RETURNING *",
+      [user_id, total_price, status, delivery_address, payment_method]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -158,7 +242,7 @@ app.get('/owner/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const results = await pool.query(
-      "SELECT orders.order_id, date, price, status, delivery_address, customer_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
+      "SELECT orders.order_id, date, price, status, delivery_address, user_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
       [req.params.id]
     );
     console.log(results.rows);
@@ -179,7 +263,7 @@ app.get('/customer/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE customer_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
+      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
       [req.params.id]
     );
     res.json(result.rows);
@@ -192,7 +276,7 @@ app.get('/customerhistory/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE customer_id = $1 AND status = 'Closed'",
+      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status = 'Closed'",
       [req.params.id]
     );
     res.json(result.rows);

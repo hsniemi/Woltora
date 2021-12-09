@@ -4,8 +4,6 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from 'react-router-dom';
 
-
-
 export default function RestaurantView(props) {
     const [activeOrders, setActiveOrders] = useState([]);
 
@@ -25,7 +23,7 @@ export default function RestaurantView(props) {
             }
         }
       getOrders();
-    },[restaurant_id]); 
+    },[]); 
 
     const handleClick = (event) =>{
         navigate('/owner');
@@ -56,9 +54,9 @@ export default function RestaurantView(props) {
                             return(
                                 <tr key={order.order_id}>
                                     <td>{order.date}</td>
-                                    <td>{order.total_price}</td>
+                                    <td>{order.price}</td>
                                     <td>{order.status}</td>
-                                    <td>{order.customer_address}</td>
+                                    <td>{order.delivery_address}</td>
                                     <td><button>Update Status</button></td>
                                 </tr>
                             )

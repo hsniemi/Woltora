@@ -49,7 +49,7 @@ export default function OrderHistoryView(props) {
                                     <td>{order.date}</td>
                                     <td>{order.total_price}</td>
                                     <td>{order.status}</td>
-                                    <td>{order.customer_id}</td>
+                                    <td>{order.user_id}</td>
                                 </tr>
                             )
                         })}

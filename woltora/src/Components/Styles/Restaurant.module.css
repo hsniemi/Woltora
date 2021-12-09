@@ -1,0 +1,14 @@
+.display {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+.cartLink {
+  display: flex;
+  justify-content: flex-end;
+  margin: 50px;
+}
+.container {
+  margin-top: 20px;
+}
