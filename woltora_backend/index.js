@@ -61,14 +61,15 @@ passport.use(new BasicStrategy(
   }
 ))
 
-app.get('/protected-resource', passport.authenticate('basic', {session: false}), (req, res) => {
+app.get('/login', passport.authenticate('basic', {session: false}), (req, res) => {
   console.log('Protected Resource accessed');
 
   res.send('Hello protected world!');
 })
 
-app.get('/another-protected-resource', passport.authenticate('basic', {session: false}), (req, res) => {
+app.get('/OwnerLogin', passport.authenticate('basic', {session: false}), (req, res) => {
   console.log('Another Protected Resource accessed');
+  res.send('Moro eli terve admin');
 })
 
 

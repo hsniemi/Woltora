@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 import { Link } from 'react-router-dom'
 import RestaurantList from './RestaurantList'
-import styles from './Styles/Home.module.css';
+import styles from './Styles/home.module.css';
 
 
 export default function Home(props) {
