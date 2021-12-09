@@ -1,21 +1,36 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import styles from './Styles/Owner.module.css';
 import {useNavigate} from 'react-router-dom';
 import RestaurantView from './RestaurantView';
+import axios from 'axios';
 
 export default function Owner(props) {
   console.log("Owner component");
   console.log(props.owner_id);
+  const [restaurants, setRestaurants] = useState([]);
   let navigate = useNavigate();
 
-  const restaurants = props.restaurants.filter(restaurant => restaurant.owner_id === props.owner_id);
+
+  useEffect(() => {
+    const getRestaurants = async () =>{
+        try {
+            const response = await axios.get(`http://localhost:4000`)
+            console.log(response);
+            setRestaurants(response.data.filter(restaurant => restaurant.user_id === props.owner_id));
+         
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+  getRestaurants();
+},[]);
 
   const handleClick = (event) => {
     navigate('/owner/addrestaurant');
   }
   const handleMenuClick = (id) => {
-    props.addRestaurant(id);
+    props.addRestaurantId(id);
     navigate('/owner/addrestaurant/addmenu');
   }
 

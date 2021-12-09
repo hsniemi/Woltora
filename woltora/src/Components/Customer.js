@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
 
 export default function Customer(props) {
-    console.log(props.customer_id);
+    console.log(props.user_id);
     const {customer_id} = props;
     const [ongoingOrder, setOngoingOrder] = useState([]);
     let navigate = useNavigate();

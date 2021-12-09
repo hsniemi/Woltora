@@ -58,13 +58,13 @@ export default function AddRestaurant(props) {
                     operating_hours: operating_hours,
                     type: type,
                     price_level: price_level,
-                    owner_id: props.ownerId,
+                    user_id: props.owner_id,
                     image: img_url
                 }, 
                 {headers: {
                     'Content-Type': 'application/json'
                 }})
-                .then(response => addRestaurant(response.data.restaurant_id));  
+                .then(response => addRestaurantId(response.data.restaurant_id));  
                 setFileInputState('');
                 setPreviewSource('');
                 setState({
@@ -88,15 +88,16 @@ export default function AddRestaurant(props) {
         });
     };
 
-    const addRestaurant = (restaurant_id) =>  {
+    const addRestaurantId = (restaurant_id) =>  {
         console.log(restaurant_id);
-        props.addRestaurant(restaurant_id);
+        props.addRestaurantId(restaurant_id);
    }
 
 
         return(
             <div>
                 <div>
+                    <Link to="/owner"></Link>
                     <h1>Add Restaurant</h1>
                 </div>
                 <div className={styles.restaurantInfoContainer}>
@@ -156,7 +157,7 @@ export default function AddRestaurant(props) {
                                     name="newRestaurantType" 
                                     value= {state.newRestaurantType}
                                     onChange= {handleChange}>
-                                    <option disabled>No selection</option>
+                                    <option >No selection</option>
                                     <option>Buffet</option>
                                     <option>Fast food</option>
                                     <option>Fast casual</option>
@@ -170,7 +171,7 @@ export default function AddRestaurant(props) {
                                     name="newRestaurantPriceLevel"
                                     value= {state.newRestaurantPriceLevel} 
                                     onChange={ handleChange}>
-                                    <option disabled>No selection</option>
+                                    <option >No selection</option>
                                     <option>€</option>
                                     <option>€€</option>
                                     <option>€€€</option>

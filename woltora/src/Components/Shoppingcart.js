@@ -21,7 +21,7 @@ export default function Shoppingcart(props) {
   const sendOrder = async () => {
     try {
       const response = await axios.post('http://localhost:4000/shoppingcart', {
-        customer_id: props.customer_id,
+        user_id: props.customer_id,
         total_price: itemsPrice,
         status: "Waiting",
         delivery_address: deliveryAddress,
