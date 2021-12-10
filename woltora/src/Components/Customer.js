@@ -53,9 +53,16 @@ export default function Customer(props) {
                     return(
                         <div key={order.order_id}className={styles.orderItem}>
                            <div>Date: {order.date}</div>
-                           <div>{order.total_price}</div>
+                           <div>{order.total_price} €</div>
                            <div className={styles.status}>Order status: {order.status}</div>
-                           <button onClick={() => handleReceived(order.order_id)}>Mark as received</button>
+                           <div className={styles.status}>Estimated time of arrival: {order.eta}</div>
+                           {order.status === "Delivering" ? 
+                                <button onClick={() => handleReceived(order.order_id)}>Mark as received</button>
+                                :
+                                <>
+                                </>
+                            }
+                           
                         </div>
                     )
                 })}

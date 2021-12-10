@@ -37,6 +37,7 @@ CREATE TABLE orders(
   date TIMESTAMP NOT NULL,
   total_price DECIMAL(10, 2) NOT NULL,
   status VARCHAR(45),
+  eta VARCHAR(25),
   delivery_address VARCHAR(255) NOT NULL,
   payment_method VARCHAR(15) NOT NULL,
   PRIMARY KEY (order_id),
@@ -85,7 +86,7 @@ VALUES
     'Streetname 20',
     '20900',
     'alice',
-    'ghi789'
+    'word'
   );
 SELECT
   owner_id
@@ -96,17 +97,17 @@ WHERE
 SELECT
   *
 FROM
-  users;
+  menus;
+SELECT
+  *
+FROM
+  menus_orders;
 SELECT
   *
 FROM
   orders;
-SELECT
-  *
-FROM
-  restaurants;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-DROP TABLE users cascade;
+DROP TABLE orders;
 SELECT
   *
 FROM
@@ -115,6 +116,12 @@ SELECT
   *
 FROM
   orders;
+UPDATE
+  orders
+SET
+  status = 'Received'
+WHERE
+  order_id = 'de20b65c-9bbd-4282-95f9-bb8b585bd7bb';
 INSERT INTO
   customers (fname, lname, address, user_name, password)
 VALUES
@@ -177,8 +184,10 @@ SET
 WHERE
   delivery_address = 'Yliopistokatu 16';
 SHOW TIMEZONE;
+select
+  now();
 SET
-  TIMEZONE = + 2;
+  GLOBAL TIMEZONE = 'Europe/Helsinki';
 DELETE FROM
   menus;
 SELECT
@@ -187,3 +196,7 @@ SELECT
 FROM
   menus
   CROSS JOIN orders;
+SELECT
+  *
+FROM
+  pg_timezone_names;

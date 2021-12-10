@@ -202,7 +202,7 @@ app.post('/shoppingcart', async (req, res) => {
 
 
     const result = await pool.query(
-      "INSERT INTO orders (user_id, date, total_price, status, delivery_address, payment_method) VALUES($1, now(), $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO orders (user_id, date, total_price, status, eta, delivery_address, payment_method) VALUES($1, now(), $2, $3, 'Unspecified', $4, $5) RETURNING *",
       [user_id, total_price, status, delivery_address, payment_method]
     );
     res.json(result.rows[0]);
@@ -243,7 +243,7 @@ app.get('/owner/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const results = await pool.query(
-      "SELECT orders.order_id, date, price, status, delivery_address, user_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
+      "SELECT orders.order_id, date, total_price, status, delivery_address, orders.user_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
       [req.params.id]
     );
     console.log(results.rows);
@@ -264,7 +264,7 @@ app.get('/customer/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
+      "SELECT order_id, date, status, eta, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
       [req.params.id]
     );
     res.json(result.rows);
@@ -277,7 +277,7 @@ app.get('/customerhistory/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status = 'Closed'",
+      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status = 'Closed' ORDER BY date DESC",
       [req.params.id]
     );
     res.json(result.rows);
@@ -290,7 +290,7 @@ app.put('/customer/receivedorder/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "UPDATE orders SET status = 'Received' WHERE order_id = $1",
+      "UPDATE orders SET status = 'Received' WHERE order_id = $1 RETURNING *",
       [req.params.id]
     );
     res.json(result);
@@ -299,6 +299,32 @@ app.put('/customer/receivedorder/:id', async (req, res) => {
   }
 })
 
+app.put('/updatestatus', async (req, res) => {
+  console.log(req.body);
+  try {
+    const result = await pool.query(
+      "UPDATE orders SET status = $1, eta = $2 WHERE order_id = $3 RETURNING *",
+      [req.body.status, req.body.eta, req.body.order_id]
+    );
+    console.log(result.rows[0]);
+    res.json("update success");
+  } catch (err) {
+    console.log(err.message);
+  }
+})
+
+app.put('/closeorder', async (req, res) => {
+  console.log(req.body);
+  try {
+    const result = await pool.query(
+      "UPDaTE orders SET status = $1 WHERE order_id = $2 RETURNING *",
+      [req.body.status, req.body.order_id]
+    );
+   res.json(result.rows[0]);
+  } catch (err) {
+    console.log(err.message);
+  }
+})
   
  
   

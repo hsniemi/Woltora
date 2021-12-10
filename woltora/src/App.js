@@ -28,8 +28,8 @@ class App extends React.Component {
       restaurants: [],
       menus: [],
       orders:[],
-      owner_id: "",
-      customer_id: "899c3e4e-c5c9-45d1-8d16-34221a8ab7be",
+      owner_id: "fa84d15c-aeb3-4d81-8dc9-d35bfd3ae609",
+      customer_id: "802d6ccb-8496-465c-aaaf-843753480821",
       restaurant_id: ""
     }
   }
