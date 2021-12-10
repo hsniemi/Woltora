@@ -35,10 +35,11 @@ export default function OrderHistoryView(props) {
                 <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Date</th>
+                            <th scope="col">Order Date</th>
                             <th scope="col">Price</th>
                             <th scope="col">Status</th>
                             <th scope="col">Customer Id</th>
+                            <th scope="col">Order Id</th>   
                         </tr>
                     </thead>
                     <tbody>
@@ -47,9 +48,10 @@ export default function OrderHistoryView(props) {
                             return(
                                 <tr key={order.order_id}>
                                     <td>{order.date}</td>
-                                    <td>{order.total_price}</td>
+                                    <td>{order.total_price} €</td>
                                     <td>{order.status}</td>
                                     <td>{order.user_id}</td>
+                                    <td>{order.order_id}</td>
                                 </tr>
                             )
                         })}

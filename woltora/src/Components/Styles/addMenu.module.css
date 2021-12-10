@@ -71,6 +71,11 @@
   height: 50px;
 }
 
+.menuPrice div {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
 .menuPrice input {
   width: 100px;
 }

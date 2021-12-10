@@ -44,7 +44,7 @@ export default function CustomerOrderHistory(props) {
                         return(
                             <tr key={order.order_id}>
                                 <td>{order.date}</td>
-                                <td>{order.total_price}</td>
+                                <td>{order.total_price} €</td>
                                 <td>{order.status}</td>
                             </tr>
                         )

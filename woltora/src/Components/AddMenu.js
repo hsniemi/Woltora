@@ -155,9 +155,11 @@ export default function AddMenu(props) {
                                 type="text" 
                                 name="price"     
                                 value= {state.price} 
-                                required                          
+                                required    
+                                placeholder="00.00"                      
                                 onChange={ handleChange }
-                                /> 
+                                />
+                            <div>€</div>     
                         </div> 
                     </div>
                     </div>
