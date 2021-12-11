@@ -9,6 +9,7 @@ require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
+const jwt = require('jsonwebtoken');
 
 const app = express();
 

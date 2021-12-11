@@ -45,7 +45,7 @@ export default function OwnerRegister(props) {
                 streetAddress: "",
                 postCode: ""
             });
-            navigate('/owner');
+            navigate('/login');
           } catch (err) {
             console.error(err);
           }
