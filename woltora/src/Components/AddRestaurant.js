@@ -5,6 +5,7 @@ import axios from 'axios';
 
 export default function AddRestaurant(props) {
     console.log("owner_id: " + props.owner_id);
+    const [restaurantCreated, setRestaurantCreated] = useState(false);
 
     const [state, setState] = useState({
         newRestaurantName: "",
@@ -52,7 +53,7 @@ export default function AddRestaurant(props) {
         const uploadData = async (name, address, hours_from, hours_to, type, price_level, img_url) => {
             const operating_hours = hours_from + "-" + hours_to;
             try {
-                await axios.post('http://localhost:4000/owner/addrestaurant/data', {
+                const response = await axios.post('http://localhost:4000/owner/addrestaurant/data', {
                     name: name,
                     address: address,
                     operating_hours: operating_hours,
@@ -64,7 +65,8 @@ export default function AddRestaurant(props) {
                 {headers: {
                     'Content-Type': 'application/json'
                 }})
-                .then(response => addRestaurantId(response.data.restaurant_id));  
+                addRestaurantId(response.data.restaurant_id); 
+                addRestaurant(response.data); 
                 setFileInputState('');
                 setPreviewSource('');
                 setState({
@@ -75,10 +77,15 @@ export default function AddRestaurant(props) {
                     newRestaurantType: "",
                     newRestaurantPriceLevel: ""
                 })
+                setRestaurantCreated(true);
             } catch (err) {
                 console.error(err);
             }
         };
+
+    const addRestaurant= (newRestaurant) => {
+        props.addRestaurant(newRestaurant);
+    }
 
     const handleChange = (event) => {
         const value = event.target.value;
@@ -97,7 +104,7 @@ export default function AddRestaurant(props) {
         return(
             <div>
                 <div>
-                    <Link to="/owner"></Link>
+                    <Link to="/owner">Back to main page</Link>
                     <h1>Add Restaurant</h1>
                 </div>
                 <div className={styles.restaurantInfoContainer}>
@@ -193,7 +200,12 @@ export default function AddRestaurant(props) {
                         </div>
                     </form>
                     <div className={styles.addMenuLink}>
-                    <Link to="addMenu">Create new menu</Link> 
+                        {restaurantCreated === true ? 
+                            <Link to="addMenu">Create new menu</Link>
+                            :
+                            <>
+                            </>
+                        }
                     </div>
                 </div> 
                 </div>               

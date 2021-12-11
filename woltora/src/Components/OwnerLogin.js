@@ -12,6 +12,7 @@ export default function OwnerLogin() {
     e.preventDefault();
     sendLogin();
   }
+
   const sendLogin = async () => {
     try {
       const res = await axios.post('http://localhost:4000/OwnerLogin', null, {
@@ -21,6 +22,8 @@ export default function OwnerLogin() {
         }
       })
       console.log(res.data);
+      const receivedJWT = res.data.jwt;
+      navigate('/owner', {replace: true});
       
     } catch (err) {
       console.error(err);

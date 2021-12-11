@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, {useState} from 'react'
 import styles from './Styles/addMenu.module.css';
+import {Link} from 'react-router-dom';
 
 
 export default function AddMenu(props) {
@@ -91,6 +92,7 @@ export default function AddMenu(props) {
     return (
         <div>
             <div className={styles.header}>
+                <Link to="/owner">Back to main page</Link>
                 <h1>Add Menu</h1>
             </div>
             <div className={styles.menuForm}>

@@ -11,7 +11,6 @@ export default function Owner(props) {
   const [restaurants, setRestaurants] = useState([]);
   let navigate = useNavigate();
 
-
   useEffect(() => {
     const getRestaurants = async () =>{
         try {

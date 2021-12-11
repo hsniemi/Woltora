@@ -79,7 +79,7 @@ class App extends React.Component {
             <Route path="/" element={ <Home restaurants={this.state.restaurants}/> } />
             <Route path="/menu/:restaurant_id" element={<MenuView />}/>
             <Route path="/Login" element={ <Login /> } />
-            <Route path="/Owner" element={ <Owner owner_id={this.state.owner_id} addRestaurantId={this.addRestaurantId}/> } />
+            <Route path="/Owner" element={ <Owner owner_id={this.state.owner_id} restaurants={this.state.restaurants} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
             <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
             <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
             <Route path="/owner/addrestaurant" element={ <AddRestaurant owner_id={this.state.owner_id} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />

@@ -4,9 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
+
 export default function OwnerRegister(props) {
 
     let navigate = useNavigate();
+    const [registerProcessState, setRegisterProcessState] = useState("idle");
 
     const [state, setState] = useState({
         username: "",
@@ -17,12 +19,9 @@ export default function OwnerRegister(props) {
         postCode: ""
     });
     
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        sendRegistration();
-    }
-    
-    const sendRegistration = async () => {
+        setRegisterProcessState("processing");
         try {
             const response = await axios.post('http://localhost:4000/register', {
               fname: state.firstName,
@@ -31,12 +30,9 @@ export default function OwnerRegister(props) {
               post_code: state.postCode,
               user_name: state.username,
               password: state.password
-            },
-            {headers: {
-              'Content-Type': 'application/json'
-          }})
-            console.log(response.data.user_id);
-            addOwnerId(response.data.user_id);
+            });
+            console.log(response);
+            setRegisterProcessState("registerSuccess");
             setState({
                 username: "",
                 password: "",
@@ -45,14 +41,14 @@ export default function OwnerRegister(props) {
                 streetAddress: "",
                 postCode: ""
             });
-            navigate('/login');
+            setTimeout(() => {
+                navigate('/ownerlogin', {replace: true});
+            },1500);
+           
           } catch (err) {
             console.error(err);
+            setRegisterProcessState("registerFailure");
           }
-    }
-
-    const addOwnerId = (ownerId) => {
-        props.addOwnerId(ownerId);
     }
     
     const handleChange = (event) => {
@@ -61,6 +57,26 @@ export default function OwnerRegister(props) {
         ...state,
         [event.target.name]: value
         });
+    };
+    
+    let registerUIControls = null;
+
+    switch(registerProcessState){
+        case "idle":
+            registerUIControls = <input type="submit" value="Submit"/>
+            break;
+
+        case "processing":
+            registerUIControls = <span style={{color: "blue"}}>Processing...</span>
+            break;
+
+        case "registerSuccess":
+            registerUIControls = <span style={{color: "green"}}>Registration success</span>
+            break;
+        
+        case "registerFailure":
+            registerUIControls = <span style={{color: "red"}}>Error</span>
+            break;
     };
     
 
@@ -107,10 +123,10 @@ export default function OwnerRegister(props) {
                 </div>
             <div>
             <br/>
-            <input type="submit" value="Submit" />
+            {registerUIControls}
             </div>
         </div>
-                </form>
+            </form>
         </div>
     </div>
     )
