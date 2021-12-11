@@ -67,9 +67,28 @@ app.get('/login', passport.authenticate('basic', {session: false}), (req, res) =
   res.send('Hello protected world!');
 })
 
-app.get('/OwnerLogin', passport.authenticate('basic', {session: false}), (req, res) => {
-  console.log('Another Protected Resource accessed');
-  res.send('Moro eli terve admin');
+app.post('/OwnerLogin', passport.authenticate('basic', {session: false}), (req, res) => {
+  console.log(req.user);
+
+  //generate JWT 
+  const payload = {
+    user: {
+      id: req.user.user_id,
+      username: req.user.user_name,
+      fname: req.user.fname
+    }
+  };
+
+  const secretkey = process.env.JWTKEY;
+
+  const options = {
+    expiresIn: '1d'
+  }
+
+  const generatedJWT = jwt.sign(payload, secretkey, options);
+
+  //send JWT as a response
+  res.json({jwt: generatedJWT});
 })
 
 
