@@ -2,6 +2,7 @@ import React, {useState, useContext } from 'react'
 import {OrderContext} from '../Context/OrderContext';
 import styles from './Styles/Shoppingcart.module.css';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 export default function Shoppingcart(props) {
   console.log(props.customer_id);
@@ -40,18 +41,18 @@ export default function Shoppingcart(props) {
   const sendMenuOrder =  (orderId) => {
     cartItems.forEach(async (item) => {
       try {
-        await axios.post('http://localhost:4000/shoppingcart/menuorder', {
+        const response = await axios.post('http://localhost:4000/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
         })
-        .then(response => console.log(response));
+        console.log(response);
+        setPayment("Credit card");
+        setDeliveryAddress("");
+        setCartItems([]);
       } catch (err) {
         console.error(err.message);
       }
     });
-    setPayment("Credit card");
-    setDeliveryAddress("");
-    setCartItems([]);
   }
 
   const handleAddress = (event) => {
@@ -64,7 +65,10 @@ export default function Shoppingcart(props) {
 
     return (
       <div className={styles.container}>
-        <h1 className={styles.shoppingHeader}>Shopping cart</h1>
+        <div className={styles.linkHeader}>
+          <h1 className={styles.shoppingHeader}>Shopping cart</h1>
+          <div><Link to="/">Home</Link></div>
+        </div>
         <div>{cartItems.length === 0 && <p>Shopping cart is empty.</p>}</div>
         {cartItems.map((item) => (
           <div key={item.menu_id} className="row">
@@ -79,10 +83,6 @@ export default function Shoppingcart(props) {
         {cartItems.length !== 0 && (
           <>
             <hr></hr>
-            {/* <div className="row">
-              <div className="col-2">Items Price</div>
-              <div className="col-1">{itemsPrice}€</div>
-            </div> */}
             <div className={styles.total}>
               <div className="col-2">Total</div>
               <div className="col-1">{itemsPrice}€</div>

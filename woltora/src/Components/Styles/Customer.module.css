@@ -1,8 +1,16 @@
 .customerHeader {
   display: flex;
   justify-content: space-between;
-  margin-right: 20px;
+  margin-right: 30px;
   border-bottom: 1px solid gray;
+}
+
+.customerPage {
+  display: flex;
+  align-items: center;
+  width: 500px;
+  margin-left: 30px;
+  justify-content: space-between;
 }
 .latestOrder {
   display: flex;
@@ -16,4 +24,5 @@
 }
 .orderHistory {
   margin-top: 20px;
+  margin-left: 30px;
 }

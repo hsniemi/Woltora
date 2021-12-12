@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styles from './Styles/Customer.module.css';
 import axios from 'axios';
-import { useNavigate} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 
 export default function Customer(props) {
     console.log(props.user_id);
     const {customer_id} = props;
-    const [ongoingOrder, setOngoingOrder] = useState([]);
+    const [ongoingOrder, setOngoingOrder] = useState();
     let navigate = useNavigate();
     
     useEffect(() =>{
@@ -14,8 +14,8 @@ export default function Customer(props) {
             console.log({customer_id});
             try {
                 const response = await axios.get(`http://localhost:4000/customer/${customer_id}`);
-                console.log(response);
-                setOngoingOrder(response.data);
+                console.log(response.data);
+                setOngoingOrder(response.data.filter(order => order.status !== 'Closed' && order.status !== 'Received'));
             } catch (err) {
                 console.error(err.message);
             }
@@ -23,8 +23,8 @@ export default function Customer(props) {
         getLatestOrders();
     },[])
 
-    const handleReceived = (order_id) => {
-        markOrderReceived(order_id);
+    const handleReceived = (order) => {
+        markOrderReceived(order.order_id);
     }
 
     const markOrderReceived = async (id) => {
@@ -32,19 +32,24 @@ export default function Customer(props) {
         try {
             const response = await axios.put(`http://localhost:4000/customer/receivedorder/${id}`);
             console.log(response);
+            setOngoingOrder(ongoingOrder.filter(order => order.order_id !== id));
         } catch (err) {
             console.error(err.message);        
         }
     }
 
     const handleViewHistory = (event) => {
+        event.preventDefault();
         navigate('/customer/orderhistory');
     }
 
     return (
            <div>
             <div className={styles.customerHeader}>
-                <h1>Customer Page</h1>
+            <div className={styles.customerPage}>
+                    <h1>Customer Page</h1>
+                    <div><Link to="/">Home</Link></div>
+                </div>
                 <h3>Hello, user</h3>   
             </div>
             <div className={styles.latestOrder}>
@@ -57,7 +62,7 @@ export default function Customer(props) {
                            <div className={styles.status}>Order status: {order.status}</div>
                            <div className={styles.status}>Estimated time of arrival: {order.eta}</div>
                            {order.status === "Delivering" ? 
-                                <button onClick={() => handleReceived(order.order_id)}>Mark as received</button>
+                                <button onClick={() => handleReceived(order)}>Mark as received</button>
                                 :
                                 <>
                                 </>

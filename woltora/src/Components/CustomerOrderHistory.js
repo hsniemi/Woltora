@@ -22,6 +22,7 @@ export default function CustomerOrderHistory(props) {
     },[])
 
     const handleClick = (event) => {
+        event.preventDefault();
         navigate('/customer');
     }
 

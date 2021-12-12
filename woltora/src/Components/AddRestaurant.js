@@ -5,14 +5,15 @@ import axios from 'axios';
 
 export default function AddRestaurant(props) {
     console.log("owner_id: " + props.owner_id);
+    const [restaurantCreated, setRestaurantCreated] = useState(false);
 
     const [state, setState] = useState({
         newRestaurantName: "",
         newRestaurantAddress: "",
         newRestaurantHoursFrom: "",
         newRestaurantHoursTo:"",
-        newRestaurantType: "",
-        newRestaurantPriceLevel: ""
+        newRestaurantType: "No selection",
+        newRestaurantPriceLevel: "No selection"
     });
     const [previewSource, setPreviewSource] = useState("");
     const [fileInputState, setFileInputState] = useState("");
@@ -51,6 +52,7 @@ export default function AddRestaurant(props) {
 
         const uploadData = async (name, address, hours_from, hours_to, type, price_level, img_url) => {
             const operating_hours = hours_from + "-" + hours_to;
+            if(type === "No selection" || price_level === "No selection"){return}
             try {
                 await axios.post('http://localhost:4000/owner/addrestaurant/data', {
                     name: name,
@@ -75,6 +77,7 @@ export default function AddRestaurant(props) {
                     newRestaurantType: "",
                     newRestaurantPriceLevel: ""
                 })
+                setRestaurantCreated(true);
             } catch (err) {
                 console.error(err);
             }
@@ -97,7 +100,7 @@ export default function AddRestaurant(props) {
         return(
             <div>
                 <div>
-                    <Link to="/owner"></Link>
+                    <Link to="/owner">Back to main page</Link>
                     <h1>Add Restaurant</h1>
                 </div>
                 <div className={styles.restaurantInfoContainer}>
@@ -156,8 +159,9 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantType" 
                                     value= {state.newRestaurantType}
+                                    required
                                     onChange= {handleChange}>
-                                    <option >No selection</option>
+                                    <option>No selection</option>
                                     <option>Buffet</option>
                                     <option>Fast food</option>
                                     <option>Fast casual</option>
@@ -170,8 +174,9 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantPriceLevel"
                                     value= {state.newRestaurantPriceLevel} 
-                                    onChange={ handleChange}>
-                                    <option >No selection</option>
+                                    required
+                                    onChange={handleChange}>
+                                    <option>No selection</option>
                                     <option>€</option>
                                     <option>€€</option>
                                     <option>€€€</option>
@@ -185,6 +190,7 @@ export default function AddRestaurant(props) {
                                     type="file" 
                                     name="image"
                                     value= {fileInputState} 
+                                    required
                                     onChange={ handleImageChange }/>
                             </div>
                         </div>
@@ -193,7 +199,12 @@ export default function AddRestaurant(props) {
                         </div>
                     </form>
                     <div className={styles.addMenuLink}>
-                    <Link to="addMenu">Create new menu</Link> 
+                        {restaurantCreated === true ? 
+                                <Link to="addMenu">Create new menu</Link>
+                                :
+                                <>
+                                </>
+                            }
                     </div>
                 </div> 
                 </div>               
