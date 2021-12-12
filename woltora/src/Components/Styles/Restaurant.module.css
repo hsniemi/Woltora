@@ -12,3 +12,32 @@
 .container {
   margin-top: 20px;
 }
+
+.name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+.homeLogin {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+}
+
+.updates {
+  margin: 30px;
+  width: 1000px;
+}
+.updates button {
+  margin-bottom: 10px;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px;
+}

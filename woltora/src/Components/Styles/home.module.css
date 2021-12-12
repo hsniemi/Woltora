@@ -9,3 +9,9 @@
   justify-content: space-between;
   margin: 20px;
 }
+
+.homeLogin {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+}

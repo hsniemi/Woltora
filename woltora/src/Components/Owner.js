@@ -27,6 +27,7 @@ export default function Owner(props) {
 },[]);
 
   const handleClick = (event) => {
+    event.preventDefault();
     navigate('/owner/addrestaurant');
   }
   const handleMenuClick = (id) => {

@@ -18,6 +18,7 @@ import Customer from './Components/Customer';
 import CustomerOrderHistory from './Components/CustomerOrderHistory';
 import {OrderContextProvider} from './Context/OrderContext';
 import MenuView from './Components/MenuView';
+import DeliveryUpdate from './Components/DeliveryUpdate';
 
 
 
@@ -29,8 +30,8 @@ class App extends React.Component {
       menus: [],
       orders:[],
       owner_id: "fa84d15c-aeb3-4d81-8dc9-d35bfd3ae609",
-      customer_id: "802d6ccb-8496-465c-aaaf-843753480821",
-      restaurant_id: ""
+      customer_id: "cf1f730a-25c3-4adb-819b-7a94f1d37fae",
+      restaurant_id: "fa84d15c-aeb3-4d81-8dc9-d35bfd3ae609"
     }
   }
 
@@ -71,8 +72,8 @@ class App extends React.Component {
       
       <BrowserRouter>
         <div>
-            <Link to="/"><div>Home</div></Link>
-            <Link to="/Login"><div>Login/Register</div></Link>
+            {/* <Link to="/"><div>Home</div></Link>
+            <Link to="/Login"><div>Login/Register</div></Link> */}
         <div>
           <OrderContextProvider>
           <Routes>
@@ -89,7 +90,7 @@ class App extends React.Component {
             <Route path="/Register" element={ <Register  /> } />
             <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
             <Route path="/OwnerRegister" element={ <OwnerRegister addOwnerId={this.addOwnerId}/> } />
-            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />
+            <Route path="/DeliveryUpdate/:restaurant_id/:restaurant_name/:order_id" element={ <DeliveryUpdate/> } />
             <Route path="/Shoppingcart" element={ <Shoppingcart customer_id={this.state.customer_id}/>} />   
           </Routes>
           </OrderContextProvider>

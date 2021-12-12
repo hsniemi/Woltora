@@ -16,11 +16,22 @@ export default function Home(props) {
 
   return(
     <div>
-      <div className={styles.headerContainer}>
+     <div className={styles.headerContainer}>
         <div>
           <h2>Woltora</h2>
           <p> Welcome to Woltora! Find the best restaurants near you.</p>
         </div>
+        <div className={styles.homeLogin}>
+          <div>
+            <Link to="/"><div>Home</div></Link>
+          </div>
+          <div>
+            <Link to="/customer"><div>My account</div></Link>
+          </div>
+          <div>
+            <Link to="/Login"><div>Login/Register</div></Link>
+          </div>
+          </div>
         <div>
           <Link to="/Shoppingcart">Go to shopping cart</Link>
         </div>
