@@ -43,18 +43,18 @@ export default function Shoppingcart(props) {
   const sendMenuOrder =  (orderId) => {
     cartItems.forEach(async (item) => {
       try {
-        await axios.post('http://localhost:4000/shoppingcart/menuorder', {
+        const response = await axios.post('http://localhost:4000/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
         })
-        .then(response => console.log(response));
+        console.log(response);
+        setPayment("Credit card");
+        setDeliveryAddress("");
+        setCartItems([]);
       } catch (err) {
         console.error(err.message);
       }
     });
-    setPayment("Credit card");
-    setDeliveryAddress("");
-    setCartItems([]);
   }
 
   const handleAddress = (event) => {
@@ -85,10 +85,6 @@ export default function Shoppingcart(props) {
         {cartItems.length !== 0 && (
           <>
             <hr></hr>
-            {/* <div className="row">
-              <div className="col-2">Items Price</div>
-              <div className="col-1">{itemsPrice}€</div>
-            </div> */}
             <div className={styles.total}>
               <div className="col-2">Total</div>
               <div className="col-1">{itemsPrice}€</div>

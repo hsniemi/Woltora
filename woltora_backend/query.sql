@@ -105,6 +105,10 @@ FROM
 SELECT
   *
 FROM
+  users;
+SELECT
+  *
+FROM
   orders;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 DROP TABLE orders;
@@ -119,9 +123,9 @@ FROM
 UPDATE
   orders
 SET
-  status = 'Received'
+  status = 'Waiting';
 WHERE
-  order_id = 'de20b65c-9bbd-4282-95f9-bb8b585bd7bb';
+  order_id = 'cf1f730a-25c3-4adb-819b-7a94f1d37fae';
 INSERT INTO
   customers (fname, lname, address, user_name, password)
 VALUES
@@ -189,13 +193,17 @@ select
 SET
   GLOBAL TIMEZONE = 'Europe/Helsinki';
 DELETE FROM
-  menus;
+  users;
 SELECT
   menu_id,
   order_id
 FROM
   menus
   CROSS JOIN orders;
+select
+  *
+from
+  orders;
 SELECT
   *
 FROM

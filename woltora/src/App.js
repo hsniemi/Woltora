@@ -17,6 +17,7 @@ import Customer from './Components/Customer';
 import CustomerOrderHistory from './Components/CustomerOrderHistory';
 import {OrderContextProvider} from './Context/OrderContext';
 import MenuView from './Components/MenuView';
+import DeliveryUpdate from './Components/DeliveryUpdate';
 
 
 class App extends React.Component {
@@ -109,7 +110,7 @@ class App extends React.Component {
         <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
         <Route path="/owner/addrestaurant" element={ <AddRestaurant jwt={this.state.jwt} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
         <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu restaurant_id={this.state.restaurant_id} /> } />
-        
+        <Route path="/DeliveryUpdate/:restaurant_id/:restaurant_name/:order_id" element={ <DeliveryUpdate/> } />
       </>
       }
 

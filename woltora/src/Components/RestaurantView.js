@@ -34,22 +34,36 @@ export default function RestaurantView(props) {
     },[restaurant_id]); 
 
     const handleClick = (event) =>{
+        event.preventDefault();
         navigate('/owner');
     }
 
     const handleOrderHistoryClick = (event) =>{
+        event.preventDefault();
         navigate(`/owner/orderhistory/${restaurant_name}/${restaurant_id}`);
     }
+    const [state, setState] = useState({
+        status: "",
+        eta: ""
+    });
 
-    const handleChangeEta = (event) =>{
-        setEta(event.target.value);
-        console.log(event.target.value);
-    }
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setState({
+        ...state,
+        [event.target.name]: value
+        });
+    };
 
-    const handleChangeStatus = (event) =>{
-        console.log(event.target.value);
-        setOrderStatus(event.target.value);
-    }
+    // const handleChangeEta = (event) =>{
+    //     setEta(event.target.value);
+    //     console.log(event.target.value);
+    // }
+
+    // const handleChangeStatus = (event) =>{
+    //     console.log(event.target.value);
+    //     setOrderStatus(event.target.value);
+    // }
 
     const handleCloseOrder = async (id) =>{
         try {
@@ -57,25 +71,15 @@ export default function RestaurantView(props) {
                 status: "Closed",
                 order_id: id
             });
+            setActiveOrders(activeOrders.filter(order => order.order_id !== id));
             console.log(response);
         } catch (err) {
             console.log(err.message);
         }
     }
 
-    const handleUpdateStatus = async (id) =>{
-        try {
-          const response = await axios.put('http://localhost:4000/updatestatus', {
-              status: orderStatus,
-              eta: eta,
-              order_id: id
-          });
-          console.log(response);
-          setEta("");
-          setOrderStatus("Received");  
-        } catch (err) {
-            console.error(err);
-        }
+    const handleUpdateStatus = (order_id) =>{
+        navigate(`/deliveryupdate/${restaurant_id}/${restaurant_name}/${order_id}`);
     }
 
     return (
@@ -91,7 +95,6 @@ export default function RestaurantView(props) {
                             <th scope="col">Status</th>
                             <th scope="col">Delivery address</th>
                             <th scope="col">Update Status</th>
-                            <th scope="col">Estimated time of arrival</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,28 +110,6 @@ export default function RestaurantView(props) {
                                         <td><button onClick={() => handleCloseOrder(order.order_id)}>Close order</button></td>
                                         :
                                         <>
-                                            <td>
-                                                <select
-                                                    name="status" 
-                                                    value= {orderStatus}
-                                                    onChange= {handleChangeStatus}
-                                                    required>
-                                                    <option>Received</option>
-                                                    <option>Preparing</option>
-                                                    <option>Ready for delivery</option>
-                                                    <option>Delivering</option>
-                                                    <option>Delivered</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input 
-                                                    type="time" 
-                                                    name="eta" 
-                                                    value={eta} 
-                                                    onChange={handleChangeEta} 
-                                                    required>
-                                                </input>
-                                            </td>
                                             <td>
                                                 <button onClick={() => handleUpdateStatus(order.order_id)}>Update order status</button>
                                             </td>

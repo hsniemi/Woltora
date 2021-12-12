@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import styles from './Styles/Restaurant.module.css';
 
 export default function OrderHistoryView(props) {
     const [closedOrders, setClosedOrders] = useState([]);
@@ -30,12 +31,20 @@ export default function OrderHistoryView(props) {
     },[]);
 
     const handleClick = (event) => {
+        event.preventDefault();
         navigate('/owner');
+    }
+    const handleBackToOrders = (event) =>{
+        event.preventDefault();
+        navigate(`/owner/${restaurant_id}/${restaurant_name}`)
     }
 
     return (
         <div>
-            <button onClick={handleClick}>Back to main page</button>
+            <div className={styles.buttons}>
+                <button onClick={handleClick}>Back to main page</button>
+                <button onClick={handleBackToOrders}>Back to orders</button>
+            </div>
             <h1>Order history for {restaurant_name}</h1>
             <div >
                 <table className="table table-hover">

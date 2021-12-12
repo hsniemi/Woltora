@@ -28,3 +28,19 @@
   width: 500px;
   justify-content: space-between;
 }
+<<<<<<< HEAD
+=======
+
+.updates {
+  margin: 30px;
+  width: 1000px;
+}
+.updates button {
+  margin-bottom: 10px;
+}
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px;
+}
+>>>>>>> main

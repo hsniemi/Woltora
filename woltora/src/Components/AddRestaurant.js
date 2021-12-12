@@ -12,8 +12,8 @@ export default function AddRestaurant(props) {
         newRestaurantAddress: "",
         newRestaurantHoursFrom: "",
         newRestaurantHoursTo:"",
-        newRestaurantType: "",
-        newRestaurantPriceLevel: ""
+        newRestaurantType: "No selection",
+        newRestaurantPriceLevel: "No selection"
     });
     const [previewSource, setPreviewSource] = useState("");
     const [fileInputState, setFileInputState] = useState("");
@@ -52,6 +52,7 @@ export default function AddRestaurant(props) {
 
         const uploadData = async (name, address, hours_from, hours_to, type, price_level, img_url) => {
             const operating_hours = hours_from + "-" + hours_to;
+            if(type === "No selection" || price_level === "No selection"){return}
             try {
                 const response = await axios.post('http://localhost:4000/owner/addrestaurant/data', {
                     name: name,
@@ -163,8 +164,9 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantType" 
                                     value= {state.newRestaurantType}
+                                    required
                                     onChange= {handleChange}>
-                                    <option >No selection</option>
+                                    <option>No selection</option>
                                     <option>Buffet</option>
                                     <option>Fast food</option>
                                     <option>Fast casual</option>
@@ -177,8 +179,9 @@ export default function AddRestaurant(props) {
                                 <select 
                                     name="newRestaurantPriceLevel"
                                     value= {state.newRestaurantPriceLevel} 
-                                    onChange={ handleChange}>
-                                    <option >No selection</option>
+                                    required
+                                    onChange={handleChange}>
+                                    <option>No selection</option>
                                     <option>€</option>
                                     <option>€€</option>
                                     <option>€€€</option>
@@ -192,6 +195,7 @@ export default function AddRestaurant(props) {
                                     type="file" 
                                     name="image"
                                     value= {fileInputState} 
+                                    required
                                     onChange={ handleImageChange }/>
                             </div>
                         </div>
@@ -201,11 +205,11 @@ export default function AddRestaurant(props) {
                     </form>
                     <div className={styles.addMenuLink}>
                         {restaurantCreated === true ? 
-                            <Link to="addMenu">Create new menu</Link>
-                            :
-                            <>
-                            </>
-                        }
+                                <Link to="addMenu">Create new menu</Link>
+                                :
+                                <>
+                                </>
+                            }
                     </div>
                 </div> 
                 </div>               

@@ -16,7 +16,7 @@ export default function Home(props) {
 
   return(
     <div>
-      <div className={styles.headerContainer}>
+     <div className={styles.headerContainer}>
         <div>
           <h2>Woltora</h2>
           <p> Welcome to Woltora! Find the best restaurants near you.</p>

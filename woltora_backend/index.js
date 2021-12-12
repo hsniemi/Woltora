@@ -123,6 +123,7 @@ app.get('/', async (req, res) => {
     console.log(err.message);
   }
 });
+
 app.post('/menus', async (req, res) => {
   try{
 
@@ -279,7 +280,7 @@ app.get('/customer/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, eta, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Closed') ORDER BY orders.date",
+      "SELECT order_id, date, status, eta, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Received') ORDER BY orders.date",
       [req.params.id]
     );
     res.json(result.rows);
@@ -292,7 +293,7 @@ app.get('/customerhistory/:id', async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status = 'Closed' ORDER BY date DESC",
+      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status IN ('Closed', 'Received') ORDER BY date DESC",
       [req.params.id]
     );
     res.json(result.rows);
@@ -308,7 +309,7 @@ app.put('/customer/receivedorder/:id', async (req, res) => {
       "UPDATE orders SET status = 'Received' WHERE order_id = $1 RETURNING *",
       [req.params.id]
     );
-    res.json(result);
+    res.json(result.rows[0]);
   } catch (err) {
     console.log(err.message);
   }
@@ -332,7 +333,7 @@ app.put('/closeorder', async (req, res) => {
   console.log(req.body);
   try {
     const result = await pool.query(
-      "UPDaTE orders SET status = $1 WHERE order_id = $2 RETURNING *",
+      "UPDATE orders SET status = $1 WHERE order_id = $2 RETURNING *",
       [req.body.status, req.body.order_id]
     );
    res.json(result.rows[0]);

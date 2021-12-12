@@ -11,15 +11,17 @@ export default function AddMenu(props) {
 
     const [state, setState] = useState({
         name:"", 
-        category:"", 
+        category:"Choose Category", 
         description:"", 
         price:""
     });
     const [previewSource, setPreviewSource] = useState("");
     const [fileInputState, setFileInputState] = useState("");
     const handleFileInputChange = (e) => {
-        previewFile(e.target.files[0]);
-        setFileInputState(e.target.value);
+        if(e.target.files[0]){
+            previewFile(e.target.files[0]);
+            setFileInputState(e.target.value);
+        }  
     }
 
     const previewFile = (file) => {
@@ -49,6 +51,9 @@ export default function AddMenu(props) {
         }
 
         const uploadData = async (category, name, description, price, img_url) => {
+            if(category === "Choose Category") {
+                return
+            }
             try {
                 await axios.post('http://localhost:4000/owner/addrestaurant/addmenu/data', {
                     restaurant_id: props.restaurant_id,
@@ -83,11 +88,6 @@ export default function AddMenu(props) {
             [e.target.name]: value
         });
     };
-
-    // const addMenuItem = (event) => {
-    //     event.preventDefault();
-    //     props.addMenuItem(menuItemCategory, menuItemName, menuItemDescription, menuItemPrice, menuItemImage);
-    // }
 
     return (
         <div>
@@ -180,10 +180,7 @@ export default function AddMenu(props) {
                         <button type="submit" >Submit</button>
                     </div>
                 </div>
-                </form> 
-                          
-            </div>
-            <div>
+                </form>             
             </div>
         </div>
     )
