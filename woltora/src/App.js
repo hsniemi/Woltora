@@ -7,7 +7,6 @@ import Login from './Components/Login';
 import Owner from './Components/Owner';
 import OwnerRegister from './Components/OwnerRegister';
 import OwnerLogin from './Components/OwnerLogin';
-import OwnerDeliveryUpdate from './Components/OwnerDeliveryUpdate';
 import Register from './Components/Register';
 import AddMenu from './Components/AddMenu';
 import axios from 'axios';
@@ -20,7 +19,6 @@ import {OrderContextProvider} from './Context/OrderContext';
 import MenuView from './Components/MenuView';
 
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -28,9 +26,11 @@ class App extends React.Component {
       restaurants: [],
       menus: [],
       orders:[],
-      owner_id: "fa84d15c-aeb3-4d81-8dc9-d35bfd3ae609",
-      customer_id: "802d6ccb-8496-465c-aaaf-843753480821",
-      restaurant_id: ""
+      owner_id: "",
+      customer_id: "",
+      restaurant_id: "",
+      ownerJWT: null,
+      customerJWT: null,
     }
   }
 
@@ -65,39 +65,78 @@ class App extends React.Component {
         orders: orders
       })
     }
+  ownerLogin = (ownerJWT, id) => {
+    this.setState({
+      ownerJWT: ownerJWT,
+      owner_id: id
+    })
+  }
+
+  login = (customerJWT, id) => {
+    this.setState({
+      customerJWT: customerJWT,
+      customer_id: id,
+  
+    })
+    console.log(this.state.customerJWT);
+  }
+
+  logout = () => {
+    this.state({
+      customerJWT: null,
+      ownerJWT: null
+    })
+  }
    
-  render() {
-    return (
-      
-      <BrowserRouter>
-        <div>
-            <Link to="/"><div>Home</div></Link>
-            <Link to="/Login"><div>Login/Register</div></Link>
-        <div>
-          <OrderContextProvider>
-          <Routes>
-            <Route path="/" element={ <Home restaurants={this.state.restaurants}/> } />
-            <Route path="/menu/:restaurant_id" element={<MenuView />}/>
-            <Route path="/Login" element={ <Login /> } />
-            <Route path="/Owner" element={ <Owner owner_id={this.state.owner_id} restaurants={this.state.restaurants} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
-            <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
-            <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
-            <Route path="/owner/addrestaurant" element={ <AddRestaurant owner_id={this.state.owner_id} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
-            <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu  restaurant_id={this.state.restaurant_id}/> } />
-            <Route path="/customer" element={<Customer customer_id={this.state.customer_id}/>} />
-            <Route path="/customer/orderhistory" element={<CustomerOrderHistory customer_id={this.state.customer_id}/>}/>
-            <Route path="/Register" element={ <Register  /> } />
-            <Route path="/OwnerLogin" element={ <OwnerLogin/> } />
-            <Route path="/OwnerRegister" element={ <OwnerRegister addOwnerId={this.addOwnerId}/> } />
-            <Route path="/OwnerDeliveryUpdate" element={ <OwnerDeliveryUpdate/> } />
-            <Route path="/Shoppingcart" element={ <Shoppingcart customer_id={this.state.customer_id}/>} />   
-          </Routes>
-          </OrderContextProvider>
-        </div>
-        </div>
-      </BrowserRouter>
-    );
- }
+    render() {
+      console.log(this.state.customerJWT);
+      console.log(this.state.ownerJWT);
+
+      let authRoutes = 
+      <>
+        <Route path="/OwnerLogin" element={ <OwnerLogin ownerLogin={this.ownerLogin}/> } />
+        <Route path="/OwnerRegister" element={ <OwnerRegister /> } />
+        
+        <Route path="/Login" element={ <Login login={this.login} /> } />
+        <Route path="/Register" element={ <Register /> } />
+      </>
+  
+      if(this.state.ownerJWT !== null) {
+      authRoutes = 
+      <>
+        <Route path="/Owner" element={ <Owner addRestaurantId={this.addRestaurantId} jwt={this.state.ownerJWT} logout={this.logout}/> } />
+        <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
+        <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
+        <Route path="/owner/addrestaurant" element={ <AddRestaurant jwt={this.state.jwt} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
+        <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu restaurant_id={this.state.restaurant_id} /> } />
+        
+      </>
+      }
+
+      if(this.state.customerJWT !== null) {
+        authRoutes =
+      <>
+        <Route path="/customer" element={<Customer jwt={this.state.customerJWT} logout={this.logout}/>} />
+        <Route path="/Shoppingcart" element={ <Shoppingcart customer_id={this.state.customer_id} jwt={this.state.customerJWT}/>} /> 
+        <Route path="/customer/orderhistory" element={<CustomerOrderHistory customer_id={this.state.customer_id}/>}/>
+      </>
+      }
+    
+      return (
+        <BrowserRouter>
+          <div>
+            <OrderContextProvider>
+            <Routes>
+              <Route path="/" element={ <Home restaurants={this.state.restaurants} userLoggedIn={this.state.customerJWT != null}/> } />
+              <Route path="/menu/:restaurant_id" element={<MenuView userLoggedIn={this.state.customerJWT != null}/>}/>
+              {authRoutes}
+              
+            </Routes>
+            </OrderContextProvider>
+          </div>
+        </BrowserRouter>
+      );
+   }  
 }
 
 export default App;

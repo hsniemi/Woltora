@@ -3,7 +3,7 @@ import styles from './Styles/OwnerLogin.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function OwnerLogin() {
+export default function OwnerLogin(props) {
   const username = React.useRef(null)
   const password = React.useRef(null)
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function OwnerLogin() {
 
   const sendLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:4000/OwnerLogin', null, {
+      const res = await axios.post('http://localhost:4000/login', null, {
         auth: {
           username: username.current.value,
           password: password.current.value
@@ -23,8 +23,9 @@ export default function OwnerLogin() {
       })
       console.log(res.data);
       const receivedJWT = res.data.jwt;
+      const id = res.data.user_id;
+      props.ownerLogin(receivedJWT, id);
       navigate('/owner', {replace: true});
-      
     } catch (err) {
       console.error(err);
     }

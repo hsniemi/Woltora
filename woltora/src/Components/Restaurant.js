@@ -20,7 +20,7 @@ export default function Restaurant(props) {
                         height="300px"
                     />
                 </div>
-                <div>
+                <div className={styles.name}>
                     {props.name}
                 </div>
                 <div>

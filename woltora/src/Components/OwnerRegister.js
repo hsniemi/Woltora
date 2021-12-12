@@ -123,7 +123,7 @@ export default function OwnerRegister(props) {
                 </div>
             <div>
             <br/>
-            {registerUIControls}
+                {registerUIControls}
             </div>
         </div>
             </form>

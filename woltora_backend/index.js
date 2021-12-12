@@ -62,13 +62,8 @@ passport.use(new BasicStrategy(
   }
 ))
 
-app.get('/login', passport.authenticate('basic', {session: false}), (req, res) => {
-  console.log('Protected Resource accessed');
 
-  res.send('Hello protected world!');
-})
-
-app.post('/OwnerLogin', passport.authenticate('basic', {session: false}), (req, res) => {
+app.post('/login', passport.authenticate('basic', {session: false}), (req, res) => {
   console.log(req.user);
 
   //generate JWT 

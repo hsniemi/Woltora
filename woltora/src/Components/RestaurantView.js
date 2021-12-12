@@ -3,12 +3,12 @@ import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 export default function RestaurantView(props) {
     const [activeOrders, setActiveOrders] = useState([]);
     const [eta, setEta] = useState("");
     const [orderStatus, setOrderStatus] = useState("Received");
-
     const {restaurant_name} = useParams();
     const {restaurant_id} = useParams();
     let navigate = useNavigate();
@@ -16,7 +16,12 @@ export default function RestaurantView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`)
+                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                })
                 console.log(response);
                 setActiveOrders(response.data.data.orders.filter(order => order.status !== 'Closed'));
                 console.log(activeOrders);

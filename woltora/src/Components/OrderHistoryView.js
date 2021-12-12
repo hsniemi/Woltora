@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 export default function OrderHistoryView(props) {
     const [closedOrders, setClosedOrders] = useState([]);
@@ -12,7 +13,12 @@ export default function OrderHistoryView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`)
+                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                })
                 console.log(response);
                 setClosedOrders(response.data.data.orders.filter(order => order.status === 'Closed'));
              

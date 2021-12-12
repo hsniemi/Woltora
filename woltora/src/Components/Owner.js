@@ -1,13 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styles from './Styles/Owner.module.css';
 import {useNavigate} from 'react-router-dom';
 import RestaurantView from './RestaurantView';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 
 export default function Owner(props) {
-  console.log("Owner component");
-  console.log(props.owner_id);
+  const decodedToken = jwt.decode(props.jwt);
+  console.log(decodedToken);
+
   const [restaurants, setRestaurants] = useState([]);
   let navigate = useNavigate();
 
@@ -16,7 +18,7 @@ export default function Owner(props) {
         try {
             const response = await axios.get(`http://localhost:4000`)
             console.log(response);
-            setRestaurants(response.data.filter(restaurant => restaurant.user_id === props.owner_id));
+            setRestaurants(response.data.filter(restaurant => restaurant.user_id === decodedToken.user.id));
          
         } catch (error) {
             console.error(error.message);
@@ -38,7 +40,7 @@ export default function Owner(props) {
       <div>
       <div className={styles.ownerHeader}>
         <div>Restaurant manager page</div>
-        <div>Hello, user</div>
+        <div>Hello, {decodedToken.user.fname}</div>
       </div>
       <div>
         <div className={styles.ownerAddRestaurant}>
@@ -55,9 +57,9 @@ export default function Owner(props) {
       <div>
         <div className={styles.ownerHeader}>
           <div>Restaurant manager page</div>
-          <div>Hello, user</div>
+          <div>Hello, {decodedToken.user.fname}</div>
         </div>
-        <div >
+        <div className={styles.restaurantContainer}>
             <div >
               {restaurants.map((restaurant) => 
               <div className={styles.restaurants} key={restaurant.restaurant_id}>

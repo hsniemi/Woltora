@@ -1,59 +1,87 @@
 import React, {useState} from 'react'
 import styles from './Styles/Register.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 
 export default function Register() {
+    const navigate = useNavigate();
+    const [registerProcessState, setRegisterProcessState] = useState("idle");
 
-const [state, setState] = useState({
-    username: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    streetAddress: "",
-    postCode: ""
-});
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-    sendRegistration();
-}
-
-const sendRegistration = async () => {
-    try {
-        const response = await axios.post('http://localhost:4000/register', {
-          fname: state.firstName,
-          lname: state.lastName,
-          street_address: state.streetAddress,
-          post_code: state.postCode,
-          user_name: state.username,
-          password: state.password
-        },
-        {headers: {
-          'Content-Type': 'application/json'
-      }})
-        console.log(response.data);
-        setState({
-            username: "",
-            password: "",
-            firstName: "",
-            lastName: "",
-            streetAddress: "",
-            postCode: ""
-        })
-      } catch (err) {
-        console.error(err);
-      }
-}
-
-const handleChange = (event) => {
-    const value = event.target.value;
-    setState({
-    ...state,
-    [event.target.name]: value
+    const [state, setState] = useState({
+        username: "",
+        password: "",
+        firstName: "",
+        lastName: "",
+        streetAddress: "",
+        postCode: ""
     });
-};
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        sendRegistration();
+    }
+
+    const sendRegistration = async () => {
+        setRegisterProcessState("processing");
+        try {
+            const response = await axios.post('http://localhost:4000/register', {
+            fname: state.firstName,
+            lname: state.lastName,
+            street_address: state.streetAddress,
+            post_code: state.postCode,
+            user_name: state.username,
+            password: state.password
+            },
+            {headers: {
+            'Content-Type': 'application/json'
+        }})
+            console.log(response.data);
+            setRegisterProcessState("registerSuccess");
+            setState({
+                username: "",
+                password: "",
+                firstName: "",
+                lastName: "",
+                streetAddress: "",
+                postCode: ""
+            })
+            setTimeout(() => {
+                navigate('/login', {replace: true});
+            },1500);
+        } catch (err) {
+            console.error(err);
+            setRegisterProcessState("registerFailure");
+        }
+    }
+
+    const handleChange = (event) => {
+        const value = event.target.value;
+        setState({
+        ...state,
+        [event.target.name]: value
+        });
+    };
+
+    let registerUIControls = null;
+
+    switch(registerProcessState){
+        case "idle":
+            registerUIControls = <input type="submit" value="Submit"/>
+            break;
+
+        case "processing":
+            registerUIControls = <span style={{color: "blue"}}>Processing...</span>
+            break;
+
+        case "registerSuccess":
+            registerUIControls = <span style={{color: "green"}}>Registration success</span>
+            break;
+        
+        case "registerFailure":
+            registerUIControls = <span style={{color: "red"}}>Error</span>
+            break;
+    };
 
 
     return (
@@ -99,10 +127,10 @@ const handleChange = (event) => {
                 </div>
             <div>
             <br/>
-            <input type="submit" value="Submit" />
+                {registerUIControls}
             </div>
-        </div>
-                </form>
+            </div>
+        </form>
         </div>
     </div>
     )

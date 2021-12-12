@@ -3,6 +3,11 @@
   background-color: cadetblue;
   width: 300px;
   text-align: left;
+  margin-right: 50px;
+}
+
+.linkHeader {
+  display: flex;
 }
 
 .order {

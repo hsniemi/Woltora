@@ -1,19 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import styles from './Styles/Customer.module.css';
 import axios from 'axios';
-import { useNavigate} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 export default function Customer(props) {
-    console.log(props.user_id);
-    const {customer_id} = props;
+    const decodedToken = jwt.decode(props.jwt);
+    const customerId = decodedToken.user.user_id;
+
     const [ongoingOrder, setOngoingOrder] = useState([]);
     let navigate = useNavigate();
     
     useEffect(() =>{
         const getLatestOrders = async() =>{
-            console.log({customer_id});
             try {
-                const response = await axios.get(`http://localhost:4000/customer/${customer_id}`);
+                const response = await axios.get(`http://localhost:4000/customer/${customerId}`);
                 console.log(response);
                 setOngoingOrder(response.data);
             } catch (err) {
@@ -44,8 +45,11 @@ export default function Customer(props) {
     return (
            <div>
             <div className={styles.customerHeader}>
-                <h1>Customer Page</h1>
-                <h3>Hello, user</h3>   
+                <div className={styles.customerPage}>
+                    <h1>Customer Page</h1>
+                    <div><Link to="/">Home</Link></div>
+                </div>
+                <h3>Hello, {decodedToken.user.fname}</h3>   
             </div>
             <div className={styles.latestOrder}>
                 {ongoingOrder &&

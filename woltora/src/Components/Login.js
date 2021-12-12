@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Styles/Login.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-export default function Login() {
+export default function Login(props) {
   const username = React.useRef(null)
   const password = React.useRef(null)
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,13 +14,17 @@ export default function Login() {
   }
   const sendLogin = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/login', {
+      const res = await axios.post('http://localhost:4000/login', null, {
         auth: {
           username: username.current.value,
           password: password.current.value
         }
       })
       console.log(res.data);
+      const receivedJWT = res.data.jwt;
+      const id = res.data.user_id;
+      props.login(receivedJWT, id);
+      navigate('/', {replace: true});
     } catch (err) {
       console.error(err);
     }
