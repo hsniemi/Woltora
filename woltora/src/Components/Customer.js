@@ -2,18 +2,26 @@ import React, {useState, useEffect, useContext} from 'react'
 import styles from './Styles/Customer.module.css';
 import axios from 'axios';
 import { Link, useNavigate} from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 export default function Customer(props) {
-    console.log(props.user_id);
-    const {customer_id} = props;
-    const [ongoingOrder, setOngoingOrder] = useState();
+    const decodedToken = jwt.decode(props.jwt);
+    console.log(decodedToken);
+    console.log(decodedToken.user.id);
+    const customer_id = decodedToken.user.id;
+
+    const [ongoingOrder, setOngoingOrder] = useState([]);
     let navigate = useNavigate();
     
     useEffect(() =>{
         const getLatestOrders = async() =>{
-            console.log({customer_id});
             try {
-                const response = await axios.get(`http://localhost:4000/customer/${customer_id}`);
+                const response = await axios.get(`http://localhost:4000/customer/${customer_id}`, 
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                });
                 console.log(response.data);
                 setOngoingOrder(response.data.filter(order => order.status !== 'Closed' && order.status !== 'Received'));
             } catch (err) {
@@ -30,7 +38,12 @@ export default function Customer(props) {
     const markOrderReceived = async (id) => {
         console.log(id);
         try {
-            const response = await axios.put(`http://localhost:4000/customer/receivedorder/${id}`);
+            const response = await axios.put(`http://localhost:4000/customer/receivedorder/${id}`, null, 
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + props.jwt
+                }
+            });
             console.log(response);
             setOngoingOrder(ongoingOrder.filter(order => order.order_id !== id));
         } catch (err) {
@@ -46,11 +59,14 @@ export default function Customer(props) {
     return (
            <div>
             <div className={styles.customerHeader}>
-            <div className={styles.customerPage}>
+                <div className={styles.customerPage}>
                     <h1>Customer Page</h1>
                     <div><Link to="/">Home</Link></div>
                 </div>
-                <h3>Hello, user</h3>   
+                <div className={styles.customerLogout}>
+                    <button onClick={props.logout}>Logout</button>
+                    <h3>Hello, {decodedToken.user.fname}</h3>  
+                </div> 
             </div>
             <div className={styles.latestOrder}>
                 {ongoingOrder &&
@@ -61,7 +77,7 @@ export default function Customer(props) {
                            <div>{order.total_price} €</div>
                            <div className={styles.status}>Order status: {order.status}</div>
                            <div className={styles.status}>Estimated time of arrival: {order.eta}</div>
-                           {order.status === "Delivering" ? 
+                           {order.status === "Delivered" ? 
                                 <button onClick={() => handleReceived(order)}>Mark as received</button>
                                 :
                                 <>

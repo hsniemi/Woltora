@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import {useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import styles from './Styles/Restaurant.module.css';
+import jwt from 'jsonwebtoken';
 
-export default function DeliveryUpdate() {
+export default function DeliveryUpdate(props) {
     const {restaurant_id} = useParams();
     const {restaurant_name} = useParams();
     const {order_id} = useParams();
@@ -20,6 +21,11 @@ export default function DeliveryUpdate() {
                 status: orderStatus,
                 eta: eta,
                 order_id: order_id
+            },
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + props.jwt
+                }
             });
             console.log(response);
             setEta("");
@@ -57,34 +63,36 @@ export default function DeliveryUpdate() {
                     <th>Estimated time of arrival</th>
                 </tr>
             </thead>
-            <tbody>          
-                <td>
-                    <select
-                        name="orderStatus"
-                        value= {orderStatus}
-                        required
-                        onChange= {handleChangeStatus}
-                        >
-                        <option>Select status</option>
-                        <option>Preparing</option>
-                        <option>Ready for delivery</option>
-                        <option>Delivering</option>
-                        <option>Delivered</option>
-                    </select>
-                </td>
-                <td>
-                    <input 
-                        type="time"
-                        name="eta" 
-                        value={eta} 
-                        required
-                        onChange={handleChangeEta} 
-                        >
-                    </input>
-                </td>
-                <td>
-                    <button onClick={handleUpdateStatus}>Update status</button>
-                </td>
+            <tbody>
+                <tr>         
+                    <td>
+                        <select
+                            name="orderStatus"
+                            value= {orderStatus}
+                            required
+                            onChange= {handleChangeStatus}
+                            >
+                            <option>Select status</option>
+                            <option>Preparing</option>
+                            <option>Ready for delivery</option>
+                            <option>Delivering</option>
+                            <option>Delivered</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input 
+                            type="time"
+                            name="eta" 
+                            value={eta} 
+                            required
+                            onChange={handleChangeEta} 
+                            >
+                        </input>
+                    </td>
+                    <td>
+                        <button onClick={handleUpdateStatus}>Update status</button>
+                    </td>
+                </tr> 
             </tbody>
         </table>
         </div>

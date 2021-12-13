@@ -3,9 +3,11 @@ import {OrderContext} from '../Context/OrderContext';
 import styles from './Styles/Shoppingcart.module.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 export default function Shoppingcart(props) {
-  console.log(props.customer_id);
+  const decodedToken = jwt.decode(props.jwt);
+  console.log('customerJWT: ' + decodedToken.user.id);
 
   const [payment, setPayment] = useState("Credit card");
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -22,15 +24,17 @@ export default function Shoppingcart(props) {
   const sendOrder = async () => {
     try {
       const response = await axios.post('http://localhost:4000/shoppingcart', {
-        user_id: props.customer_id,
+        user_id: decodedToken.user.id,
         total_price: itemsPrice,
         status: "Waiting",
         delivery_address: deliveryAddress,
         payment_method: payment
       },
-      {headers: {
-        'Content-Type': 'application/json'
-    }})
+      {
+        headers: {
+            'Authorization': 'Bearer ' + props.jwt
+        }
+    })
       console.log(response);
       sendMenuOrder(response.data.order_id);
     } catch (err) {
@@ -44,7 +48,7 @@ export default function Shoppingcart(props) {
         const response = await axios.post('http://localhost:4000/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
-        })
+        });
         console.log(response);
         setPayment("Credit card");
         setDeliveryAddress("");
@@ -70,16 +74,16 @@ export default function Shoppingcart(props) {
           <div><Link to="/">Home</Link></div>
         </div>
         <div>{cartItems.length === 0 && <p>Shopping cart is empty.</p>}</div>
-        {cartItems.map((item) => (
-          <div key={item.menu_id} className="row">
-            <div className="col-2" width="10%">{item.name}</div>
-            <div className="col-2" width="10%">
-              <button onClick={()=>addCartItems(item)} >+</button>
-              <button onClick={()=>removeCartItems(item)} >-</button>
+          {cartItems.map((item) => (
+            <div key={item.menu_id} className="row">
+              <div className="col-2" width="10%">{item.name}</div>
+              <div className="col-2" width="10%">
+                <button onClick={()=>addCartItems(item)} >+</button>
+                <button onClick={()=>removeCartItems(item)} >-</button>
+              </div>
+              <div className="col-2" width="10%">{item.qty} x {item.price}€</div>
             </div>
-            <div className="col-2" width="10%">{item.qty} x {item.price}€</div>
-          </div>
-        ))}
+          ))}
         {cartItems.length !== 0 && (
           <>
             <hr></hr>

@@ -1,8 +1,15 @@
 .ownerHeader {
   display: flex;
   justify-content: space-between;
+  font-size: 20px;
+  margin-right: 30px;
+  margin-left: 30px;
   padding: 5px;
   border-bottom: 1px solid lightgrey;
+}
+
+.restaurantContainer {
+  margin: 30px;
 }
 
 .ownerAddRestaurant {
@@ -71,4 +78,9 @@
 
 .previewImage {
   margin-right: 20px;
+}
+.logout {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30px;
 }

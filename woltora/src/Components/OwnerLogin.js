@@ -1,29 +1,35 @@
 import React from 'react';
 import styles from './Styles/OwnerLogin.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function OwnerLogin() {
+export default function OwnerLogin(props) {
   const username = React.useRef(null)
   const password = React.useRef(null)
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     sendLogin();
   }
+
   const sendLogin = async () => {
     try {
-      const res = await axios.get('http://localhost:4000/OwnerLogin', {
+      const res = await axios.post('http://localhost:4000/login', null, {
         auth: {
           username: username.current.value,
           password: password.current.value
         }
       })
       console.log(res.data);
+      const receivedJWT = res.data.jwt;
+      props.ownerLogin(receivedJWT);
+      navigate('/owner', {replace: true});
     } catch (err) {
       console.error(err);
     }
   }
+
   return (
     <div className={styles.loginBackground}>
       <div className={styles.loginHeader}>

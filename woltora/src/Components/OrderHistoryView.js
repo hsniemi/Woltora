@@ -1,19 +1,28 @@
 import React, {useState, useEffect} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import styles from './Styles/Restaurant.module.css';
 
 export default function OrderHistoryView(props) {
+    const decodedToken = jwt.decode(props.jwt);
+    console.log(props.jwt);
     const [closedOrders, setClosedOrders] = useState([]);
 
     let navigate = useNavigate();
     const {restaurant_name} = useParams();
     const {restaurant_id} = useParams();
+    console.log(restaurant_id);
 
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`)
+                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                })
                 console.log(response);
                 setClosedOrders(response.data.data.orders.filter(order => order.status === 'Closed'));
              

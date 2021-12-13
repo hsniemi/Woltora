@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import {OrderContext} from '../Context/OrderContext';
+import styles from './Styles/home.module.css'
 
 
 export default function Menu(props) {
@@ -12,6 +13,8 @@ export default function Menu(props) {
     }
 
     return (
+    
+    <div>
         <div>
             <div>
                 <div>
@@ -38,5 +41,6 @@ export default function Menu(props) {
                 <button onClick={() => handleAddToCart(menu)}>Add to cart</button>
             </div>
         </div>
+    </div>
     )
 }

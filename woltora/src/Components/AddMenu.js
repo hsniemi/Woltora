@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useState} from 'react'
 import styles from './Styles/addMenu.module.css';
 import {Link} from 'react-router-dom';
+import jwt from 'jsonwebtoken';
 
 
 export default function AddMenu(props) {
@@ -42,8 +43,13 @@ export default function AddMenu(props) {
             var img_url = "";
             const data = {data: file};
             try {
-                await axios.post('http://localhost:4000/owner/addrestaurant/addmenu', data)
-                .then(response => img_url = response.data);
+                const response = await axios.post('http://localhost:4000/owner/addrestaurant/addmenu', data,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                });
+                img_url = response.data;
                 uploadData(state.category, state.name, state.description, state.price, img_url);
             } catch (err) {
                 console.error(err);

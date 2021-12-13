@@ -31,9 +31,16 @@ export default function Home(props) {
           <div>
             <Link to="/Login"><div>Login/Register</div></Link>
           </div>
+          <div>
+          {props.userLoggedIn ? "Logged In" : "Logged Out"}
           </div>
-        <div>
-          <Link to="/Shoppingcart">Go to shopping cart</Link>
+        </div>
+        <div className={styles.shoppingcartLink}>
+          {props.userLoggedIn ? 
+            <Link to="/Shoppingcart">Go to shopping cart</Link>
+            :
+            <></>
+          }
         </div>
       </div>
       <div className={styles.searchBar}>
