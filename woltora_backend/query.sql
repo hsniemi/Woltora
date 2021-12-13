@@ -109,7 +109,7 @@ FROM
 SELECT
   *
 FROM
-  orders;
+  menus;
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 DROP TABLE orders;
 SELECT
@@ -193,7 +193,7 @@ select
 SET
   GLOBAL TIMEZONE = 'Europe/Helsinki';
 DELETE FROM
-  users;
+  menus;
 SELECT
   menu_id,
   order_id

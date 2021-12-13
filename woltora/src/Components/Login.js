@@ -22,8 +22,7 @@ export default function Login(props) {
       })
       console.log(res.data);
       const receivedJWT = res.data.jwt;
-      const id = res.data.user_id;
-      props.login(receivedJWT, id);
+      props.login(receivedJWT);
       navigate('/', {replace: true});
     } catch (err) {
       console.error(err);

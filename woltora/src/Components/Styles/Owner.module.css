@@ -79,3 +79,8 @@
 .previewImage {
   margin-right: 20px;
 }
+.logout {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 30px;
+}

@@ -1,7 +1,6 @@
 import React, { useContext } from 'react'
 import {OrderContext} from '../Context/OrderContext';
 import styles from './Styles/home.module.css'
-import {Link} from 'react-router-dom'
 
 
 export default function Menu(props) {

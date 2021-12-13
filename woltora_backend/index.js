@@ -10,29 +10,19 @@ const cloudinary = require('cloudinary').v2;
 const passport = require('passport');
 const BasicStrategy = require('passport-http').BasicStrategy;
 const jwt = require('jsonwebtoken');
+const JwtStrategy = require('passport-jwt').Strategy,
+      ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 
-app.use((req, res, next) => { 
-    console.log('middleware executing...');
-    next();
-});
+// app.use((req, res, next) => { 
+//     console.log('middleware executing...');
+//     next();
+// });
 
-const users = [
-  {
-    id: 1,
-    username: 'demouser',
-    password: '123456'
-  },
-  {
-    id: 2,
-    username: 'testuser',
-    password: '789876'
-  }
-]
 
 passport.use(new BasicStrategy(
   async (username, password, done) => {
@@ -62,6 +52,22 @@ passport.use(new BasicStrategy(
   }
 ))
 
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: process.env.JWTKEY
+}
+
+passport.use(new JwtStrategy(options, function(jwt_payload, done) {
+  console.log('JWT is valid');
+  console.log('payload: ');
+  console.log( jwt_payload);
+
+  done(null, jwt_payload);
+}))
+
+app.get('/jwt-protected-resource', passport.authenticate('jwt', {session: false}), (req, res) => {
+  res.send("ok");
+})
 
 app.post('/login', passport.authenticate('basic', {session: false}), (req, res) => {
   console.log(req.user);
@@ -71,7 +77,8 @@ app.post('/login', passport.authenticate('basic', {session: false}), (req, res) 
     user: {
       id: req.user.user_id,
       username: req.user.user_name,
-      fname: req.user.fname
+      fname: req.user.fname,
+      lname:req.user.lname
     }
   };
 
@@ -136,7 +143,7 @@ app.post('/menus', async (req, res) => {
   }
 })
 
-app.post('/owner/addrestaurant/image', async (req, res) => {
+app.post('/owner/addrestaurant/image', passport.authenticate('jwt', {session: false}), async (req, res) => {
   try {
       const fileStr = req.body.data;
       const uploadResponse = await cloudinary.uploader.upload(fileStr, {
@@ -171,7 +178,7 @@ app.post('/owner/addrestaurant/data', async (req, res) => {
     }
 })
 
-app.post('/owner/addrestaurant/addmenu', async (req, res) => {
+app.post('/owner/addrestaurant/addmenu', passport.authenticate('jwt', {session: false}), async (req, res) => {
   try {
       const fileStr = req.body.data;
       const uploadResponse = await cloudinary.uploader.upload(fileStr, {
@@ -207,7 +214,7 @@ app.post('/owner/addrestaurant/addmenu/data', async (req, res) => {
   }
 });
 
-app.post('/shoppingcart', async (req, res) => {
+app.post('/shoppingcart', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log("req.body.data: " + req.body.data);
   try {
     const {user_id} = req.body;
@@ -255,11 +262,11 @@ app.get('/menu/:id', async (req, res) => {
   }
 })
 
-app.get('/owner/:id', async (req, res) => {
+app.get('/owner/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.params.id);
   try {
     const results = await pool.query(
-      "SELECT orders.order_id, date, total_price, status, delivery_address, orders.user_id FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
+      "SELECT orders.order_id, date, total_price, price, status, delivery_address, orders.user_id, menus.name FROM orders JOIN menus_orders ON orders.order_id = menus_orders.order_id JOIN menus ON menus.menu_id = menus_orders.menu_id JOIN restaurants ON restaurants.restaurant_id = menus.restaurant_id WHERE restaurants.restaurant_id = $1 ORDER BY date DESC",
       [req.params.id]
     );
     console.log(results.rows);
@@ -276,7 +283,7 @@ app.get('/owner/:id', async (req, res) => {
 });
 
 
-app.get('/customer/:id', async (req, res) => {
+app.get('/customer/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
@@ -289,7 +296,7 @@ app.get('/customer/:id', async (req, res) => {
   }
 });
 
-app.get('/customerhistory/:id', async (req, res) => {
+app.get('/customerhistory/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
@@ -302,7 +309,7 @@ app.get('/customerhistory/:id', async (req, res) => {
   }
 })
 
-app.put('/customer/receivedorder/:id', async (req, res) => {
+app.put('/customer/receivedorder/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
@@ -315,7 +322,7 @@ app.put('/customer/receivedorder/:id', async (req, res) => {
   }
 })
 
-app.put('/updatestatus', async (req, res) => {
+app.put('/updatestatus', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.body);
   try {
     const result = await pool.query(
@@ -329,7 +336,7 @@ app.put('/updatestatus', async (req, res) => {
   }
 })
 
-app.put('/closeorder', async (req, res) => {
+app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.body);
   try {
     const result = await pool.query(

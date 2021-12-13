@@ -2,9 +2,12 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import styles from './Styles/Owner.module.css';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
+
 
 export default function AddRestaurant(props) {
-    console.log("owner_id: " + props.owner_id);
+    const decodedToken = jwt.decode(props.jwt);
+    console.log(decodedToken);
     const [restaurantCreated, setRestaurantCreated] = useState(false);
 
     const [state, setState] = useState({
@@ -38,11 +41,15 @@ export default function AddRestaurant(props) {
         };
 
         const uploadImage = async (file) => {
-            var img_url = "";
             const data = {data: file};
             try {
-                await axios.post('http://localhost:4000/owner/addrestaurant/image', data)
-                .then(response => img_url = response.data);
+                const response = await axios.post('http://localhost:4000/owner/addrestaurant/image', data,
+                {
+                    headers: {
+                        'Authorization': 'Bearer ' + props.jwt
+                    }
+                })
+                const img_url = response.data;
                 uploadData(state.newRestaurantName, state.newRestaurantAddress, state.newRestaurantHoursFrom, state.newRestaurantHoursTo, 
                     state.newRestaurantType, state.newRestaurantPriceLevel, img_url);
             } catch (err) {
@@ -60,7 +67,7 @@ export default function AddRestaurant(props) {
                     operating_hours: operating_hours,
                     type: type,
                     price_level: price_level,
-                    user_id: props.owner_id,
+                    user_id: decodedToken.user.id,
                     image: img_url
                 }, 
                 {headers: {

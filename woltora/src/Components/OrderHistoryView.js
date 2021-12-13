@@ -5,11 +5,14 @@ import jwt from 'jsonwebtoken';
 import styles from './Styles/Restaurant.module.css';
 
 export default function OrderHistoryView(props) {
+    const decodedToken = jwt.decode(props.jwt);
+    console.log(props.jwt);
     const [closedOrders, setClosedOrders] = useState([]);
 
     let navigate = useNavigate();
     const {restaurant_name} = useParams();
     const {restaurant_id} = useParams();
+    console.log(restaurant_id);
 
     useEffect(() => {
         const getOrders = async () =>{

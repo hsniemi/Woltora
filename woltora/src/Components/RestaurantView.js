@@ -6,9 +6,9 @@ import {useNavigate} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
 
 export default function RestaurantView(props) {
+    const decodedToken = jwt.decode(props.jwt);
+    console.log(decodedToken);
     const [activeOrders, setActiveOrders] = useState([]);
-    const [eta, setEta] = useState("");
-    const [orderStatus, setOrderStatus] = useState("Received");
     const {restaurant_name} = useParams();
     const {restaurant_id} = useParams();
     let navigate = useNavigate();
@@ -55,21 +55,16 @@ export default function RestaurantView(props) {
         });
     };
 
-    // const handleChangeEta = (event) =>{
-    //     setEta(event.target.value);
-    //     console.log(event.target.value);
-    // }
-
-    // const handleChangeStatus = (event) =>{
-    //     console.log(event.target.value);
-    //     setOrderStatus(event.target.value);
-    // }
-
     const handleCloseOrder = async (id) =>{
         try {
             const response = await axios.put('http://localhost:4000/closeorder', {
                 status: "Closed",
                 order_id: id
+            },
+            {
+            headers: {
+                'Authorization': 'Bearer ' + props.jwt
+            }
             });
             setActiveOrders(activeOrders.filter(order => order.order_id !== id));
             console.log(response);
@@ -90,7 +85,9 @@ export default function RestaurantView(props) {
                 <table className="table table-hover">
                     <thead>
                         <tr>
+                            <th scope="col">Order Id</th>
                             <th scope="col">Date</th>
+                            <th scope="col">Product</th>
                             <th scope="col">Price</th>
                             <th scope="col">Status</th>
                             <th scope="col">Delivery address</th>
@@ -99,11 +96,13 @@ export default function RestaurantView(props) {
                     </thead>
                     <tbody>
                         {activeOrders &&
-                        activeOrders.map((order) => {
+                        activeOrders.map((order, i) => {
                             return(
-                                <tr key={order.order_id}>
+                                <tr key={i}>
+                                    <td>{order.order_id}</td>
                                     <td>{order.date}</td>
-                                    <td>{order.total_price} €</td>
+                                    <td>{order.name}</td>
+                                    <td>{order.price} €</td>
                                     <td>{order.status}</td>
                                     <td>{order.delivery_address}</td>
                                     {order.status === "Received" ? 

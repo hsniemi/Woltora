@@ -30,9 +30,11 @@ export default function Shoppingcart(props) {
         delivery_address: deliveryAddress,
         payment_method: payment
       },
-      {headers: {
-        'Content-Type': 'application/json'
-    }})
+      {
+        headers: {
+            'Authorization': 'Bearer ' + props.jwt
+        }
+    })
       console.log(response);
       sendMenuOrder(response.data.order_id);
     } catch (err) {
@@ -46,7 +48,7 @@ export default function Shoppingcart(props) {
         const response = await axios.post('http://localhost:4000/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
-        })
+        });
         console.log(response);
         setPayment("Credit card");
         setDeliveryAddress("");

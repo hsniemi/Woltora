@@ -23,8 +23,7 @@ export default function OwnerLogin(props) {
       })
       console.log(res.data);
       const receivedJWT = res.data.jwt;
-      const id = res.data.user_id;
-      props.ownerLogin(receivedJWT, id);
+      props.ownerLogin(receivedJWT);
       navigate('/owner', {replace: true});
     } catch (err) {
       console.error(err);

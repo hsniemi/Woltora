@@ -27,8 +27,6 @@ class App extends React.Component {
       restaurants: [],
       menus: [],
       orders:[],
-      owner_id: "",
-      customer_id: "",
       restaurant_id: "",
       ownerJWT: null,
       customerJWT: null,
@@ -66,24 +64,20 @@ class App extends React.Component {
         orders: orders
       })
     }
-  ownerLogin = (ownerJWT, id) => {
+  ownerLogin = (ownerJWT) => {
     this.setState({
-      ownerJWT: ownerJWT,
-      owner_id: id
+      ownerJWT: ownerJWT
     })
   }
 
-  login = (customerJWT, id) => {
+  login = (customerJWT) => {
     this.setState({
-      customerJWT: customerJWT,
-      customer_id: id,
-  
+      customerJWT: customerJWT
     })
-    console.log(this.state.customerJWT);
   }
 
   logout = () => {
-    this.state({
+    this.setState({
       customerJWT: null,
       ownerJWT: null
     })
@@ -106,20 +100,20 @@ class App extends React.Component {
       authRoutes = 
       <>
         <Route path="/Owner" element={ <Owner addRestaurantId={this.addRestaurantId} jwt={this.state.ownerJWT} logout={this.logout}/> } />
-        <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders}/> }/>
-        <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView />} orders={this.state.orders} />
-        <Route path="/owner/addrestaurant" element={ <AddRestaurant jwt={this.state.jwt} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
-        <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu restaurant_id={this.state.restaurant_id} /> } />
-        <Route path="/DeliveryUpdate/:restaurant_id/:restaurant_name/:order_id" element={ <DeliveryUpdate/> } />
+        <Route path="/owner/:restaurant_id/:restaurant_name" element={ <RestaurantView setOrders={this.setOrders} jwt={this.state.ownerJWT}/> }/>
+        <Route path="/owner/orderhistory/:restaurant_name/:restaurant_id" element={<OrderHistoryView jwt={this.state.ownerJWT} orders={this.state.orders} />} />
+        <Route path="/owner/addrestaurant" element={ <AddRestaurant jwt={this.state.ownerJWT} addRestaurant={this.addRestaurant} addRestaurantId={this.addRestaurantId}/> } />
+        <Route path="/owner/addrestaurant/addmenu" element={ <AddMenu restaurant_id={this.state.restaurant_id} jwt={this.state.ownerJWT} /> } />
+        <Route path="/DeliveryUpdate/:restaurant_id/:restaurant_name/:order_id" element={ <DeliveryUpdate jwt={this.state.ownerJWT}/> } />
       </>
       }
 
       if(this.state.customerJWT !== null) {
         authRoutes =
       <>
-        <Route path="/customer" element={<Customer jwt={this.state.customerJWT} logout={this.logout}/>} />
-        <Route path="/Shoppingcart" element={ <Shoppingcart customer_id={this.state.customer_id} jwt={this.state.customerJWT}/>} /> 
-        <Route path="/customer/orderhistory" element={<CustomerOrderHistory customer_id={this.state.customer_id}/>}/>
+        <Route path="/customer" element={<Customer jwt={this.state.customerJWT} logout={this.logout} customer_id={this.state.customer_id}/>} />
+        <Route path="/Shoppingcart" element={ <Shoppingcart jwt={this.state.customerJWT}/>} /> 
+        <Route path="/customer/orderhistory" element={<CustomerOrderHistory jwt={this.state.customerJWT}/>}/>
       </>
       }
     
@@ -131,7 +125,7 @@ class App extends React.Component {
               <Route path="/" element={ <Home restaurants={this.state.restaurants} userLoggedIn={this.state.customerJWT != null}/> } />
               <Route path="/menu/:restaurant_id" element={<MenuView userLoggedIn={this.state.customerJWT != null}/>}/>
               {authRoutes}
-              
+              <Route path="*" element={<Home restaurants={this.state.restaurants} userLoggedIn={this.state.customerJWT != null}/> } />
             </Routes>
             </OrderContextProvider>
           </div>
