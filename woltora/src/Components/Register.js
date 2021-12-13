@@ -93,36 +93,36 @@ export default function Register() {
                  <form  onSubmit={handleSubmit}>
                     <div>
                         <label>
-                            <input type="text" name="username" value={state.username} placeholder="Username" onChange={handleChange}/>
+                            <input required type="text" name="username" value={state.username} placeholder="Username" onChange={handleChange}/>
                         </label>
                     </div>
                 <div>
                     <label>
                     <br/>
-                        <input type="text" name="password" value={state.password} placeholder="Password" onChange={handleChange}/>
+                        <input required type="text" name="password" value={state.password} placeholder="Password" onChange={handleChange}/>
                     </label>
                 <div>
                     <label>
                     <br/>
-                        <input type="text" name="firstName" value={state.firstName} placeholder="First name" onChange={handleChange}/>
+                        <input required type="text" name="firstName" value={state.firstName} placeholder="First name" onChange={handleChange}/>
                     </label>
                 </div>
                 <div>
                     <label>
                     <br/>
-                        <input type="text" name="lastName" value={state.lastName} placeholder="Last name" onChange={handleChange}/>
+                        <input required type="text" name="lastName" value={state.lastName} placeholder="Last name" onChange={handleChange}/>
                     </label>
                 </div>
                 <div>
                 <br/>
                     <label>
-                        <input type="text" name="streetAddress" value={state.streetAddress} placeholder="Street address" onChange={handleChange}/>
+                        <input required type="text" name="streetAddress" value={state.streetAddress} placeholder="Street address" onChange={handleChange}/>
                     </label>
                 </div>
                 <div>
                 <br/>
                     <label>
-                        <input type="text" name="postCode" value={state.postCode} placeholder="Postcode" onChange={handleChange}/>
+                        <input required type="text" name="postCode" value={state.postCode} placeholder="Postcode" onChange={handleChange}/>
                     </label>
                 </div>
             <div>

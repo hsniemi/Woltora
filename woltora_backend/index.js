@@ -282,12 +282,11 @@ app.get('/owner/:id', passport.authenticate('jwt', {session: false}), async (req
   }
 });
 
-
 app.get('/customer/:id', passport.authenticate('jwt', {session: false}), async (req, res) => {
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, eta, total_price FROM orders WHERE user_id = $1 AND status NOT IN ('Received') ORDER BY orders.date",
+      " SELECT * FROM menus JOIN menus_orders ON menus.menu_id = menus_orders.menu_id JOIN orders ON orders.order_id = menus_orders.order_id WHERE orders.user_id = $1 ORDER BY orders.date",
       [req.params.id]
     );
     res.json(result.rows);
@@ -300,7 +299,7 @@ app.get('/customerhistory/:id', passport.authenticate('jwt', {session: false}), 
   console.log(req.params.id);
   try {
     const result = await pool.query(
-      "SELECT order_id, date, status, total_price FROM orders WHERE user_id = $1 AND status IN ('Closed', 'Received') ORDER BY date DESC",
+      "SELECT * FROM menus AS m JOIN menus_orders AS mo ON  m.menu_id = mo.menu_id JOIN orders AS o ON mo.order_id = o.order_id WHERE user_id = $1 AND status IN ('Closed', 'Received') ORDER BY date DESC",
       [req.params.id]
     );
     res.json(result.rows);

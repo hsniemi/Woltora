@@ -42,17 +42,21 @@ export default function CustomerOrderHistory(props) {
                 <thead>
                     <tr>
                         <th scope="col">Date</th>
+                        <th scope="col">Order Id</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Product</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {orders &&
-                    orders.map((order) => {
+                    orders.map((order, i) => {
                         return(
-                            <tr key={order.order_id}>
+                            <tr key={i}>
                                 <td>{order.date}</td>
-                                <td>{order.total_price} €</td>
+                                <td>{order.order_id}</td>
+                                <td>{order.price} €</td>
+                                <td>{order.name}</td>
                                 <td>{order.status}</td>
                             </tr>
                         )

@@ -31,7 +31,7 @@ export default function Menu(props) {
                     {menu.description}
                 </div>
                 <div>
-                    {menu.price}
+                    {menu.price} €
                 </div>
                 <div>
                     {menu.category}

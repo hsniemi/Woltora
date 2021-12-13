@@ -122,7 +122,7 @@ class App extends React.Component {
           <div>
             <OrderContextProvider>
             <Routes>
-              <Route path="/" element={ <Home restaurants={this.state.restaurants} userLoggedIn={this.state.customerJWT != null}/> } />
+              <Route path="/" element={ <Home restaurants={this.state.restaurants} logout={this.logout} userLoggedIn={this.state.customerJWT != null}/> } />
               <Route path="/menu/:restaurant_id" element={<MenuView userLoggedIn={this.state.customerJWT != null}/>}/>
               {authRoutes}
               <Route path="*" element={<Home restaurants={this.state.restaurants} userLoggedIn={this.state.customerJWT != null}/> } />
