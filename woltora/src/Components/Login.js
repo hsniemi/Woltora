@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Styles/Login.module.css';
 import { Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
+import Constants from '../Constants.json'
 
 export default function Login(props) {
   const username = React.useRef(null)
@@ -14,7 +15,7 @@ export default function Login(props) {
   }
   const sendLogin = async () => {
     try {
-      const res = await axios.post('http://localhost:4000/login', null, {
+      const res = await axios.post(Constants.API_ADDRESS + '/login', null, {
         auth: {
           username: username.current.value,
           password: password.current.value

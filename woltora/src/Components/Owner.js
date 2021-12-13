@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import RestaurantView from './RestaurantView';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function Owner(props) {
   const decodedToken = jwt.decode(props.jwt);
@@ -18,7 +19,7 @@ export default function Owner(props) {
   useEffect(() => {
     const getRestaurants = async () =>{
         try {
-            const response = await axios.get(`http://localhost:4000`)
+            const response = await axios.get(Constants.API_ADDRESS)
             console.log(response);
             setRestaurants(response.data.filter(restaurant => restaurant.user_id === decodedToken.user.id));
          

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function CustomerOrderHistory(props) {
     const decodedToken = jwt.decode(props.jwt);
@@ -13,7 +14,7 @@ export default function CustomerOrderHistory(props) {
         const getOrders = async() =>{
             console.log({customer_id});
             try {
-                const response = await axios.get(`http://localhost:4000/customerhistory/${customer_id}`, 
+                const response = await axios.get(Constants.API_ADDRESS + `/customerhistory/${customer_id}`, 
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt

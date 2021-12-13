@@ -4,6 +4,7 @@ import styles from './Styles/Shoppingcart.module.css';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function Shoppingcart(props) {
   const decodedToken = jwt.decode(props.jwt);
@@ -28,7 +29,7 @@ export default function Shoppingcart(props) {
       return
     }
     try {
-      const response = await axios.post('http://localhost:4000/shoppingcart', {
+      const response = await axios.post(Constants.API_ADDRESS + '/shoppingcart', {
         user_id: decodedToken.user.id,
         total_price: itemsPrice,
         status: "Waiting",
@@ -50,7 +51,7 @@ export default function Shoppingcart(props) {
   const sendMenuOrder =  (orderId) => {
     cartItems.forEach(async (item) => {
       try {
-        const response = await axios.post('http://localhost:4000/shoppingcart/menuorder', {
+        const response = await axios.post(Constants.API_ADDRESS + '/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
         });

@@ -3,6 +3,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import styles from './Styles/Restaurant.module.css';
+import Constants from '../Constants.json'
 
 export default function OrderHistoryView(props) {
     const decodedToken = jwt.decode(props.jwt);
@@ -17,7 +18,7 @@ export default function OrderHistoryView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`,
+                const response = await axios.get(Constants.API_ADDRESS + `/owner/${restaurant_id}`,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt

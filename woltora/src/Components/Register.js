@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import styles from './Styles/Register.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Constants from '../Constants.json'
 
 
 export default function Register() {
@@ -25,7 +26,7 @@ export default function Register() {
     const sendRegistration = async () => {
         setRegisterProcessState("processing");
         try {
-            const response = await axios.post('http://localhost:4000/register', {
+            const response = await axios.post(Constants.API_ADDRESS + '/register', {
             fname: state.firstName,
             lname: state.lastName,
             street_address: state.streetAddress,

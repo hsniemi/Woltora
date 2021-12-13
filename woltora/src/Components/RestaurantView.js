@@ -4,6 +4,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useNavigate} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function RestaurantView(props) {
     const decodedToken = jwt.decode(props.jwt);
@@ -16,7 +17,7 @@ export default function RestaurantView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(`http://localhost:4000/owner/${restaurant_id}`,
+                const response = await axios.get(Constants.API_ADDRESS + `/owner/${restaurant_id}`,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -57,7 +58,7 @@ export default function RestaurantView(props) {
 
     const handleCloseOrder = async (id) =>{
         try {
-            const response = await axios.put('http://localhost:4000/closeorder', {
+            const response = await axios.put(Constants.API_ADDRESS + '/closeorder', {
                 status: "Closed",
                 order_id: id
             },

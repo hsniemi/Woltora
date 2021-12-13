@@ -3,6 +3,7 @@ import styles from './Styles/Customer.module.css';
 import axios from 'axios';
 import { Link, useNavigate} from 'react-router-dom';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function Customer(props) {
     const decodedToken = jwt.decode(props.jwt);
@@ -17,7 +18,7 @@ export default function Customer(props) {
         const getLatestOrders = async() =>{
             console.log("get orders: " + customer_id);
             try {
-                const response = await axios.get(`http://localhost:4000/customer/${customer_id}`, 
+                const response = await axios.get(Constants.API_ADDRESS + `/customer/${customer_id}`, 
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -39,7 +40,7 @@ export default function Customer(props) {
     const markOrderReceived = async (id) => {
         console.log(id);
         try {
-            const response = await axios.put(`http://localhost:4000/customer/receivedorder/${id}`, null, 
+            const response = await axios.put(Constants.API_ADDRESS + `/customer/receivedorder/${id}`, null, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + props.jwt

@@ -11,13 +11,14 @@ export default function DeliveryUpdate(props) {
     const [eta, setEta] = useState("");
     const [orderStatus, setOrderStatus] = useState("Select status");
     const navigate = useNavigate();
+    import Constants from '../Constants.json'
 
 
     const handleUpdateStatus = async (e) => {
         e.preventDefault();
         if(orderStatus === "Select status"){return}
         try {
-            const response = await axios.put('http://localhost:4000/updatestatus', {
+            const response = await axios.put(Constants.API_ADDRESS + '/updatestatus', {
                 status: orderStatus,
                 eta: eta,
                 order_id: order_id
