@@ -89,15 +89,33 @@ VALUES
     'word'
   );
 SELECT
+  *
+FROM
+  orders AS o
+  JOIN menus_orders AS mo ON o.order_id = mo.order_id
+  JOIN menus as m ON m.menu_id = mo.menu_id
+WHERE
+  user_id = $ 1
+  AND status NOT IN ('Received')
+ORDER BY
+  orders.date;
+SELECT
+  *
+FROM
+  menus AS m
+  JOIN menus_orders AS mo ON m.menu_id = mo.menu_id
+  JOIN orders AS o ON mo.order_id = o.order_id
+WHERE
+  user_id = '43b898ec-a28c-4fd0-a2ac-f41ebe6c9f4b';
+SELECT
   owner_id
 FROM
   owners
 WHERE
   fname = 'John';
-SELECT
-  *
+*
 FROM
-  menus;
+  orders;
 SELECT
   *
 FROM
@@ -119,7 +137,7 @@ FROM
 SELECT
   *
 FROM
-  orders;
+  users;
 UPDATE
   orders
 SET

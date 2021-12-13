@@ -7,10 +7,11 @@ import jwt from 'jsonwebtoken';
 
 export default function Shoppingcart(props) {
   const decodedToken = jwt.decode(props.jwt);
-  console.log('customerJWT: ' + decodedToken.user.id);
+  console.log('customer id from jwt: ' + decodedToken.user.id);
 
   const [payment, setPayment] = useState("Credit card");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [missingAddress, setMissingAddress] = useState(false);
 
 
   const {cartItems, setCartItems, addCartItems, removeCartItems} = useContext(OrderContext);
@@ -22,6 +23,10 @@ export default function Shoppingcart(props) {
   }
 
   const sendOrder = async () => {
+    if(deliveryAddress === ""){
+      setMissingAddress(true);
+      return
+    }
     try {
       const response = await axios.post('http://localhost:4000/shoppingcart', {
         user_id: decodedToken.user.id,
@@ -99,6 +104,13 @@ export default function Shoppingcart(props) {
                     value= {deliveryAddress}
                     required
                     onChange={ handleAddress }/>
+                  <div>
+                    {missingAddress ?
+                      <span style={{color: "red"}}>Missing Delivery Address</span>
+                      :
+                      <></>
+                    }
+                  </div>
             </div>
             <div className={styles.order}>
               <select

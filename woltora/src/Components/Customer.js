@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect} from 'react'
 import styles from './Styles/Customer.module.css';
 import axios from 'axios';
 import { Link, useNavigate} from 'react-router-dom';
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 export default function Customer(props) {
     const decodedToken = jwt.decode(props.jwt);
     console.log(decodedToken);
-    console.log(decodedToken.user.id);
+    
     const customer_id = decodedToken.user.id;
 
     const [ongoingOrder, setOngoingOrder] = useState([]);
@@ -15,6 +15,7 @@ export default function Customer(props) {
     
     useEffect(() =>{
         const getLatestOrders = async() =>{
+            console.log("get orders: " + customer_id);
             try {
                 const response = await axios.get(`http://localhost:4000/customer/${customer_id}`, 
                 {
@@ -70,11 +71,13 @@ export default function Customer(props) {
             </div>
             <div className={styles.latestOrder}>
                 {ongoingOrder &&
-                ongoingOrder.map((order) =>{
+                ongoingOrder.map((order, index) =>{
                     return(
-                        <div key={order.order_id}className={styles.orderItem}>
+                        <div key={index}className={styles.orderItem}>
                            <div>Date: {order.date}</div>
-                           <div>{order.total_price} €</div>
+                           <div>Order Id: {order.order_id} €</div>
+                           <div>{order.name} €</div>
+                           <div>{order.price} €</div>
                            <div className={styles.status}>Order status: {order.status}</div>
                            <div className={styles.status}>Estimated time of arrival: {order.eta}</div>
                            {order.status === "Delivered" ? 
