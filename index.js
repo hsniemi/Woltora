@@ -361,8 +361,10 @@ app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (re
   }
 })
 // app.use(express.static(__dirname + '/woltora/build'));
-app.use('/*',express.static(path.join(__dirname, 'woltora', 'build')));
-
+app.use(express.static(path.join(__dirname, 'woltora', 'build')));
+app.get('/*',(req,res)=>{
+res.sendFile (path.join(__dirname, 'woltora', 'build','index.html'))
+})
   
   app.listen(PORT, () => {
     console.log(`Server is listening at port ${PORT}`);
