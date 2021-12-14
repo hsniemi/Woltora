@@ -360,9 +360,8 @@ app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (re
     console.log(err.message);
   }
 })
-  
-app.use('*',express.static(path.join(__dirname ,'public')));
-
+// app.use(express.static(__dirname + '/woltora/build'));
+app.use(express.static(path.join(__dirname, 'woltora', 'build')));
 
   
   app.listen(PORT, () => {
