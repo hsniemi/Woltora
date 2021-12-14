@@ -361,7 +361,7 @@ app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (re
   }
 })
   
-app.use('/*',express.static(path.join(__dirname , 'woltora','build')));
+app.use('*',express.static(path.join(__dirname ,'public')));
 
 
   
