@@ -76,9 +76,9 @@ export default function Customer(props) {
                     return(
                         <div key={index}className={styles.orderItem}>
                            <div>Date: {order.date}</div>
-                           <div>Order Id: {order.order_id} €</div>
-                           <div>{order.name} €</div>
-                           <div>{order.price} €</div>
+                           <div>Order Id: {order.order_id} </div>
+                           <div>{order.name} </div>
+                           <div>{order.price} </div>
                            <div className={styles.status}>Order status: {order.status}</div>
                            <div className={styles.status}>Estimated time of arrival: {order.eta}</div>
                            {order.status === "Delivered" ? 
