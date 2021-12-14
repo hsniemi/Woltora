@@ -19,7 +19,7 @@ export default function Owner(props) {
   useEffect(() => {
     const getRestaurants = async () =>{
         try {
-            const response = await axios.get(Constants.API_ADRESS +'/restaurants')
+            const response = await axios.get(Constants.API_ADDRESS +'/restaurants')
             console.log(response);
             setRestaurants(response.data.filter(restaurant => restaurant.user_id === decodedToken.user.id));
          

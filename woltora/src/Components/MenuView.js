@@ -13,7 +13,7 @@ export default function MenuView(props) {
     useEffect(() =>{
         const getMenus = async (req, res) => {
             try{
-                const response = await axios.get(Constants.API_ADRESS +`/menu/${restaurant_id}`);
+                const response = await axios.get(Constants.API_ADDRESS +`/menu/${restaurant_id}`);
                 console.log(response.data);
                 setMenus(response.data);
             }catch(err){

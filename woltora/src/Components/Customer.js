@@ -18,7 +18,7 @@ export default function Customer(props) {
         const getLatestOrders = async() =>{
             console.log("get orders: " + customer_id);
             try {
-                const response = await axios.get(Constants.API_ADRESS +`/customer/${customer_id}`, 
+                const response = await axios.get(Constants.API_ADDRESS +`/customer/${customer_id}`, 
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -40,7 +40,7 @@ export default function Customer(props) {
     const markOrderReceived = async (id) => {
         console.log(id);
         try {
-            const response = await axios.put(Constants.API_ADRESS +`/customer/receivedorder/${id}`, null, 
+            const response = await axios.put(Constants.API_ADDRESS +`/customer/receivedorder/${id}`, null, 
             {
                 headers: {
                     'Authorization': 'Bearer ' + props.jwt

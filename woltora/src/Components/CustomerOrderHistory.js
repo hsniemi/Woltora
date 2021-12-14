@@ -14,7 +14,7 @@ export default function CustomerOrderHistory(props) {
         const getOrders = async() =>{
             console.log({customer_id});
             try {
-                const response = await axios.get(Constants.API_ADRESS +`/customerhistory/${customer_id}`, 
+                const response = await axios.get(Constants.API_ADDRESS +`/customerhistory/${customer_id}`, 
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt

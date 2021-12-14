@@ -43,7 +43,7 @@ export default function AddRestaurant(props) {
         const uploadImage = async (file) => {
             const data = {data: file};
             try {
-                const response = await axios.post(Constants.API_ADRESS +'/owner/addrestaurant/image', data,
+                const response = await axios.post(Constants.API_ADDRESS +'/owner/addrestaurant/image', data,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -61,7 +61,7 @@ export default function AddRestaurant(props) {
             const operating_hours = hours_from + "-" + hours_to;
             if(type === "No selection" || price_level === "No selection"){return}
             try {
-                const response = await axios.post(Constants.API_ADRESS +'/owner/addrestaurant/data', {
+                const response = await axios.post(Constants.API_ADDRESS +'/owner/addrestaurant/data', {
                     name: name,
                     address: address,
                     operating_hours: operating_hours,

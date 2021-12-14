@@ -18,6 +18,7 @@ import CustomerOrderHistory from './Components/CustomerOrderHistory';
 import {OrderContextProvider} from './Context/OrderContext';
 import MenuView from './Components/MenuView';
 import DeliveryUpdate from './Components/DeliveryUpdate';
+import Constants from './Constants.json';
 
 
 class App extends React.Component {
@@ -34,7 +35,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get(Constants.API_ADRESS +"/")
+    axios.get(Constants.API_ADDRESS +"/home")
     .then(response => {
       this.setState({restaurants: response.data})
       console.log(response.data);
