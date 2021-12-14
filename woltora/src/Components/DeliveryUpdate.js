@@ -3,6 +3,7 @@ import {useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import styles from './Styles/Restaurant.module.css';
 import jwt from 'jsonwebtoken';
+import Constants from '../Constants.json'
 
 export default function DeliveryUpdate(props) {
     const {restaurant_id} = useParams();
@@ -11,14 +12,14 @@ export default function DeliveryUpdate(props) {
     const [eta, setEta] = useState("");
     const [orderStatus, setOrderStatus] = useState("Select status");
     const navigate = useNavigate();
-    import Constants from '../Constants.json'
+    
 
 
     const handleUpdateStatus = async (e) => {
         e.preventDefault();
         if(orderStatus === "Select status"){return}
         try {
-            const response = await axios.put(Constants.API_ADDRESS + '/updatestatus', {
+            const response = await axios.put('/updatestatus', {
                 status: orderStatus,
                 eta: eta,
                 order_id: order_id

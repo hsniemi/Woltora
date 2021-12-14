@@ -1,5 +1,5 @@
 const express = require('express')
-
+const PORT = process.env.PORT || 4000;
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const { v4: uuidv4 } = require('uuid');
@@ -12,16 +12,14 @@ const BasicStrategy = require('passport-http').BasicStrategy;
 const jwt = require('jsonwebtoken');
 const JwtStrategy = require('passport-jwt').Strategy,
       ExtractJwt = require('passport-jwt').ExtractJwt;
+const path = require('path');
 
 const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 
-// app.use((req, res, next) => { 
-//     console.log('middleware executing...');
-//     next();
-// });
+app.use(express.static(__dirname + 'woltora/public'));
 
 
 passport.use(new BasicStrategy(
@@ -64,6 +62,10 @@ passport.use(new JwtStrategy(options, function(jwt_payload, done) {
 
   done(null, jwt_payload);
 }))
+
+// app.get('/', function(req, res){
+//   res.render("index");
+// })
 
 app.get('/jwt-protected-resource', passport.authenticate('jwt', {session: false}), (req, res) => {
   res.send("ok");
@@ -120,6 +122,18 @@ app.post('/register', async (req, res) => {
 })
 
 app.get('/', async (req, res) => {
+  try {
+    const restaurants = await pool.query(
+      "SELECT * FROM restaurants"
+    );
+    console.log(restaurants.rows);
+    res.json(restaurants.rows);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
+
+app.get('/restaurants', async (req, res) => {
   try {
     const restaurants = await pool.query(
       "SELECT * FROM restaurants"
@@ -350,4 +364,6 @@ app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (re
   
  
   
-  app.listen(process.env.PORT || 4000)
+  app.listen(PORT, () => {
+    console.log(`Server is listening at port ${PORT}`);
+  })

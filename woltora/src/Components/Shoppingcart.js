@@ -29,7 +29,7 @@ export default function Shoppingcart(props) {
       return
     }
     try {
-      const response = await axios.post(Constants.API_ADDRESS + '/shoppingcart', {
+      const response = await axios.post('/shoppingcart', {
         user_id: decodedToken.user.id,
         total_price: itemsPrice,
         status: "Waiting",
@@ -51,7 +51,7 @@ export default function Shoppingcart(props) {
   const sendMenuOrder =  (orderId) => {
     cartItems.forEach(async (item) => {
       try {
-        const response = await axios.post(Constants.API_ADDRESS + '/shoppingcart/menuorder', {
+        const response = await axios.post('/shoppingcart/menuorder', {
           menu_id: item.menu_id,
           order_id: orderId
         });

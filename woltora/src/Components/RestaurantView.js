@@ -17,7 +17,7 @@ export default function RestaurantView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(Constants.API_ADDRESS + `/owner/${restaurant_id}`,
+                const response = await axios.get(`/owner/${restaurant_id}`,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -58,7 +58,7 @@ export default function RestaurantView(props) {
 
     const handleCloseOrder = async (id) =>{
         try {
-            const response = await axios.put(Constants.API_ADDRESS + '/closeorder', {
+            const response = await axios.put('/closeorder', {
                 status: "Closed",
                 order_id: id
             },

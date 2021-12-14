@@ -18,7 +18,7 @@ export default function OrderHistoryView(props) {
     useEffect(() => {
         const getOrders = async () =>{
             try {
-                const response = await axios.get(Constants.API_ADDRESS + `/owner/${restaurant_id}`,
+                const response = await axios.get(`/owner/${restaurant_id}`,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt

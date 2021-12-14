@@ -24,7 +24,7 @@ export default function OwnerRegister(props) {
         e.preventDefault();
         setRegisterProcessState("processing");
         try {
-            const response = await axios.post(Constants.API_ADDRESS + '/register', {
+            const response = await axios.post('/register', {
               fname: state.firstName,
               lname: state.lastName,
               street_address: state.streetAddress,
