@@ -34,7 +34,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/")
+    axios.get(Constants.API_ADRESS +"/")
     .then(response => {
       this.setState({restaurants: response.data})
       console.log(response.data);
