@@ -19,7 +19,7 @@ export default function DeliveryUpdate(props) {
         e.preventDefault();
         if(orderStatus === "Select status"){return}
         try {
-            const response = await axios.put(Constants.API_ADRESS +'/updatestatus', {
+            const response = await axios.put(Constants.API_ADDRESS +'/updatestatus', {
                 status: orderStatus,
                 eta: eta,
                 order_id: order_id

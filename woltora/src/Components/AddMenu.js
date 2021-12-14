@@ -44,7 +44,7 @@ export default function AddMenu(props) {
             var img_url = "";
             const data = {data: file};
             try {
-                const response = await axios.post(Constants.API_ADRESS +'/owner/addrestaurant/addmenu', data,
+                const response = await axios.post(Constants.API_ADDRESS +'/owner/addrestaurant/addmenu', data,
                 {
                     headers: {
                         'Authorization': 'Bearer ' + props.jwt
@@ -62,7 +62,7 @@ export default function AddMenu(props) {
                 return
             }
             try {
-                await axios.post(Constants.API_ADRESS +'/owner/addrestaurant/addmenu/data', {
+                await axios.post(Constants.API_ADDRESS +'/owner/addrestaurant/addmenu/data', {
                     restaurant_id: props.restaurant_id,
                     category: category,
                     name: name,

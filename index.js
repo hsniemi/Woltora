@@ -19,7 +19,6 @@ const app = express();
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(cors());
 
-app.use(express.static(__dirname + 'woltora/public'));
 
 
 passport.use(new BasicStrategy(
@@ -121,7 +120,7 @@ app.post('/register', async (req, res) => {
   }
 })
 
-app.get('/', async (req, res) => {
+app.get('/home', async (req, res) => {
   try {
     const restaurants = await pool.query(
       "SELECT * FROM restaurants"
@@ -362,7 +361,9 @@ app.put('/closeorder', passport.authenticate('jwt', {session: false}), async (re
   }
 })
   
- 
+app.use('/*',express.static(path.join(__dirname , 'woltora','build')));
+
+
   
   app.listen(PORT, () => {
     console.log(`Server is listening at port ${PORT}`);
