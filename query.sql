@@ -210,8 +210,7 @@ select
   now();
 SET
   GLOBAL TIMEZONE = 'Europe/Helsinki';
-DELETE FROM
-  menus;
+DELETE FROM;
 SELECT
   menu_id,
   order_id
