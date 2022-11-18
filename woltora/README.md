@@ -1,10 +1,7 @@
 # Woltora-web-sovellus
 
 Tämä sovellus on osa Oulun ammattikorkeakoulun Web-ohjelmoinnin sovellusprojektia. 
-Projektiryhmässä oli minun, Henna Niemen, lisäksi Riku Korkiasaari, Arttu Uusitalo ja Jin Seo.
-
-Sovelluksen esittelyvideon voit katsoa tästä linkistä: (https://youtu.be/76BzzvhXmkE).
-Sovellus on Heroku-pilvipalvelussa osoitteessa: (https://woltora-app.herokuapp.com/).
+Projektiryhmässä oli minun, Henna Niemen, lisäksi Riku Korkiasaari, Arttu Uusitalo ja Kim JinSeo.
 
 ### Projektin tavoitteet
 Tarkoituksena oli tehdä ruuantilaussovellus, jota käytetään nettiselaimen kautta. 
