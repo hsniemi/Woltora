@@ -3,8 +3,7 @@
 Tämä sovellus on osa Oulun ammattikorkeakoulun Web-ohjelmoinnin sovellusprojektia. 
 Projektiryhmässä oli Henna Niemi, Riku Korkiasaari, Arttu Uusitalo ja Kim JinSeo.
 
-Woltora sovelluksen esittelyvideon voi katsoa Youtubesta: (https://youtu.be/6To3TWrudQ4), 
-ja sovellus on Heroku-pilvipalvelussa osoitteessa (https://woltora.herokuapp.com/).
+Woltora sovelluksen esittelyvideon voi katsoa Youtubesta: (https://youtu.be/6To3TWrudQ4).
 
 ### Projektin tavoitteet
 Tarkoituksena oli tehdä ruuantilaussovellus, jota käytetään nettiselaimen kautta. 
